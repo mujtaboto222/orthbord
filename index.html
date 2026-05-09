@@ -4,6 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
 <title>Orthoboard — Treatment Planning</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230a0a0a'/%3E%3Ctext x='32' y='44' text-anchor='middle' font-family='Geist,system-ui,sans-serif' font-weight='600' font-size='36' fill='%23fafafa'%3EO%3C/text%3E%3C/svg%3E" />
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
   tailwind.config = { darkMode: 'class' };
@@ -1777,6 +1778,7 @@ function Canvas({
             onPointerDown={(e) => {
               if (tool === 'select' || tool === 'pan') {
                 e.stopPropagation();
+                lastPos.current = { x: e.clientX, y: e.clientY };
                 setSelectedPhotoId(p.id);
                 setDraggedPhoto(p.id);
                 // double-tap detection on touch
@@ -1793,6 +1795,7 @@ function Canvas({
             }}
             onResizeStart={(e) => {
               e.stopPropagation();
+              lastPos.current = { x: e.clientX, y: e.clientY };
               setSelectedPhotoId(p.id);
               setResizingPhoto({ id: p.id });
             }}
@@ -1822,10 +1825,10 @@ function Canvas({
                 <line x1={m.x1} y1={m.y1} x2={m.x2} y2={m.y2} stroke="#0891b2" strokeWidth={2} />
                 <circle cx={m.x1} cy={m.y1} r={6} fill="#0891b2"
                   style={{ cursor: isDraggable ? 'grab' : 'default', pointerEvents: isDraggable ? 'auto' : 'none' }}
-                  onPointerDown={isDraggable ? (e) => { e.stopPropagation(); e.preventDefault(); setDraggingEndpoint({ id: m.id, endpoint: 'p1' }); } : undefined} />
+                  onPointerDown={isDraggable ? (e) => { e.stopPropagation(); e.preventDefault(); lastPos.current = { x: e.clientX, y: e.clientY }; setDraggingEndpoint({ id: m.id, endpoint: 'p1' }); } : undefined} />
                 <circle cx={m.x2} cy={m.y2} r={6} fill="#0891b2"
                   style={{ cursor: isDraggable ? 'grab' : 'default', pointerEvents: isDraggable ? 'auto' : 'none' }}
-                  onPointerDown={isDraggable ? (e) => { e.stopPropagation(); e.preventDefault(); setDraggingEndpoint({ id: m.id, endpoint: 'p2' }); } : undefined} />
+                  onPointerDown={isDraggable ? (e) => { e.stopPropagation(); e.preventDefault(); lastPos.current = { x: e.clientX, y: e.clientY }; setDraggingEndpoint({ id: m.id, endpoint: 'p2' }); } : undefined} />
                 <g transform={`translate(${midX}, ${midY}) rotate(${angle})`}>
                   <rect x={-28} y={-22} width={56} height={16} fill="#0891b2" rx={3} />
                   <text x={0} y={-10} textAnchor="middle" fontSize={11}
@@ -1863,7 +1866,7 @@ function Canvas({
             onEdit={() => setEditingNote(n.id)}
             onChange={(text) => setNotesLive(prev => prev.map(x => x.id === n.id ? { ...x, text } : x))}
             onBlur={() => { setNotes(p => [...p]); setEditingNote(null); }}
-            onDragStart={() => setDraggedNote(n.id)}
+            onDragStart={(e) => { lastPos.current = { x: e.clientX, y: e.clientY }; setDraggedNote(n.id); }}
             onDelete={() => setNotes(prev => prev.filter(x => x.id !== n.id))}
             tool={tool}
           />
@@ -3489,7 +3492,7 @@ function StickyNote({ note, isEditing, onEdit, onChange, onBlur, onDragStart, on
            style={{ left: note.x, top: note.y, width: 280 }}
            onPointerDown={(e) => {
              e.stopPropagation();
-             if (tool === 'pan' || tool === 'select') onDragStart();
+             if (tool === 'pan' || tool === 'select') onDragStart(e);
            }}>
         <div className={`rounded-xl shadow-lg overflow-hidden border
                         ${dark ? 'bg-neutral-900 border-neutral-700'
@@ -3575,7 +3578,7 @@ function StickyNote({ note, isEditing, onEdit, onChange, onBlur, onDragStart, on
     <div className="absolute group" style={{ left: note.x, top: note.y }}
          onPointerDown={(e) => {
            e.stopPropagation();
-           if (!isEditing && (tool === 'pan' || tool === 'select')) onDragStart();
+           if (!isEditing && (tool === 'pan' || tool === 'select')) onDragStart(e);
          }}
          onDoubleClick={(e) => { e.stopPropagation(); onEdit(); }}>
       {isEditing ? (
