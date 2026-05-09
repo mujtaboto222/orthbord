@@ -1885,10 +1885,37 @@ function PhotoItem({ photo, selected, previewRotation = 0, viewportZoom, tool, o
   const p = photo;
   const totalRotation = (p.rotation || 0) + previewRotation;
   const transform = `rotate(${totalRotation}deg) scaleX(${p.flipH ? -1 : 1}) scaleY(${p.flipV ? -1 : 1})`;
+
+  // Long-press → context menu on touch (iPad/Android tablets)
+  const longPressRef = useRef({ timer: null, startX: 0, startY: 0, fired: false });
+  const handleTouchStart = (e) => {
+    if (e.pointerType !== 'touch') return;
+    const x = e.clientX, y = e.clientY;
+    longPressRef.current.startX = x;
+    longPressRef.current.startY = y;
+    longPressRef.current.fired = false;
+    longPressRef.current.timer = setTimeout(() => {
+      longPressRef.current.fired = true;
+      onContextMenu({ clientX: x, clientY: y, preventDefault: () => {}, stopPropagation: () => {} });
+    }, 500);
+  };
+  const cancelLongPress = (e) => {
+    if (e && longPressRef.current.timer) {
+      const dx = Math.abs(e.clientX - longPressRef.current.startX);
+      const dy = Math.abs(e.clientY - longPressRef.current.startY);
+      if (dx < 8 && dy < 8 && !longPressRef.current.fired) return; // still holding still
+    }
+    clearTimeout(longPressRef.current.timer);
+    longPressRef.current.timer = null;
+  };
+
   return (
     <div className="absolute group"
          style={{ left: p.x, top: p.y, width: p.w, height: p.h }}
-         onPointerDown={onPointerDown}
+         onPointerDown={(e) => { handleTouchStart(e); onPointerDown(e); }}
+         onPointerMove={cancelLongPress}
+         onPointerUp={() => clearTimeout(longPressRef.current.timer)}
+         onPointerCancel={() => clearTimeout(longPressRef.current.timer)}
          onDoubleClick={onDoubleClick}
          onContextMenu={(e) => { e.preventDefault(); e.stopPropagation(); onContextMenu(e); }}>
       <div className="absolute inset-0" style={{ transform, transformOrigin: 'center center' }}>
