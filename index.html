@@ -94,7 +94,7 @@ const IconFlipH    = (p) => <Icon {...p} d={<><path d="M3 7v10a2 2 0 0 0 2 2h6V5
 const IconFlipV    = (p) => <Icon {...p} d={<><path d="M7 3h10a2 2 0 0 1 2 2v6H5V5a2 2 0 0 1 2-2z"/><path d="M7 21h10a2 2 0 0 0 2-2v-6H5v6a2 2 0 0 0 2 2z" strokeDasharray="3 3"/></>} />;
 const IconMeasure  = (p) => <Icon {...p} d={<><path d="M16 2l6 6L8 22l-6-6L16 2z"/><path d="M14 6l2 2"/><path d="M11 9l2 2"/><path d="M8 12l2 2"/><path d="M5 15l2 2"/></>} />;
 const IconAngle    = (p) => <Icon {...p} d={<><path d="M2 20 L12 4 L22 20"/><path d="M6.5 14 A 6 6 0 0 1 17.5 14" fill="none"/></>} />;
-const IconSmileLine= (p) => <Icon {...p} d={<path d="M3 14 Q 7 8, 12 7 Q 17 8, 21 14"/>} />;
+const IconSmileLine= (p) => <Icon {...p} d={<path d="M3 10 Q 7 16, 12 17 Q 17 16, 21 10"/>} />;
 const IconDT       = ({ size = 18 }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor">
     <text x="2" y="17" fontSize="13" fontWeight="700" fontFamily="Geist, system-ui, sans-serif" letterSpacing="0.5">DT</text>
@@ -104,7 +104,7 @@ const IconCheck    = (p) => <Icon {...p} d={<polyline points="20 6 9 17 4 12"/>}
 const IconUndo     = (p) => <Icon {...p} d={<><path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-15-6.7L3 13"/></>} />;
 const IconVert     = (p) => <Icon {...p} d={<line x1="12" y1="3" x2="12" y2="21"/>} />;
 const IconHorz     = (p) => <Icon {...p} d={<line x1="3" y1="12" x2="21" y2="12"/>} />;
-const IconCurve    = (p) => <Icon {...p} d={<path d="M3 18 Q 12 4, 21 18"/>} />;
+const IconCurve    = (p) => <Icon {...p} d={<path d="M3 8 Q 12 22, 21 8"/>} />;
 const IconTeeth    = (p) => <Icon {...p} d={<><rect x="3" y="8" width="4" height="10" rx="1"/><rect x="8" y="6" width="4" height="12" rx="1"/><rect x="13" y="6" width="4" height="12" rx="1"/><rect x="18" y="8" width="3" height="10" rx="1"/></>} />;
 const IconSun      = (p) => <Icon {...p} d={<><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m4.93 19.07 1.41-1.41"/><path d="m17.66 6.34 1.41-1.41"/></>} />;
 const IconMoon     = (p) => <Icon {...p} d={<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>} />;
@@ -200,22 +200,26 @@ const ZONES = {
 };
 const PHOTO_W = 280, GAP = 40;
 
+const IconFifths    = (p) => <Icon {...p} d={<><line x1="3" y1="4"  x2="3"  y2="20"/><line x1="7.2" y1="4" x2="7.2" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/><line x1="16.8" y1="4" x2="16.8" y2="20"/><line x1="21" y1="4" x2="21" y2="20"/></>} />;
+const IconThirds    = (p) => <Icon {...p} d={<><line x1="3" y1="9"  x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/></>} />;
+
 const TOOLS = [
-  { id: 'pan',     Icon: IconHand,    label: 'Pan' },
-  { id: 'select',  Icon: IconMove,    label: 'Select' },
-  { id: 'pen',     Icon: IconPen,     label: 'Pen' },
-  { id: 'line',    Icon: IconMinus,   label: 'Line' },
-  { id: 'measure', Icon: IconMeasure, label: 'Measure (px)' },
-  { id: 'text',    Icon: IconType,    label: 'Note' },
-  { id: 'eraser',  Icon: IconEraser,  label: 'Erase' },
+  { id: 'pan',       Icon: IconHand,       label: 'Pan' },
+  { id: 'select',    Icon: IconMove,       label: 'Select' },
+  { id: 'pen',       Icon: IconPen,        label: 'Pen' },
+  { id: 'measure',   Icon: IconMeasure,    label: 'Measure' },
+  { id: 'text',      Icon: IconType,       label: 'Note' },
+  { id: 'eraser',    Icon: IconEraser,     label: 'Erase' },
 ];
 
 const DIAG_TOOLS = [
   { id: 'vline',     Icon: IconVert,     label: 'Vertical Line',     desc: 'Perpendicular to true horizontal' },
   { id: 'hline',     Icon: IconHorz,     label: 'Horizontal Line',   desc: 'Perpendicular to true vertical' },
-  { id: 'curve',     Icon: IconCurve,    label: 'Smile Arc',         desc: 'Match smile arc to upper lip' },
-  { id: 'smileline', Icon: IconSmileLine,label: 'Smile Line',        desc: 'Match smile line to lower lip' },
+  { id: 'curve',     Icon: IconCurve,    label: 'Lip Line',          desc: 'Match lip line to upper lip' },
+  { id: 'smileline', Icon: IconSmileLine,label: 'Smile Arc',         desc: 'Match smile arc to lower lip' },
   { id: 'teeth',     Icon: IconTeeth,    label: 'Tooth Proportions', desc: 'Smile design grid (golden ratio)' },
+  { id: 'fifths',    Icon: IconFifths,   label: 'Rule of Fifths',    desc: 'Resize box — 5 equal vertical fifths' },
+  { id: 'thirds',    Icon: IconThirds,   label: 'Rule of Thirds',    desc: 'Resize box — 3 equal horizontal thirds' },
   { id: 'angle',     Icon: IconAngle,    label: 'Angle Tool',        desc: 'Measure angle between two lines' },
 ];
 
@@ -223,7 +227,7 @@ const DIAG_TOOLS = [
 // IndexedDB — stores case files (Firefox/Safari) + folder handle (Chrome/Edge)
 // ============================================================
 const DB_NAME = 'orthoboard';
-const DB_VERSION = 1;
+const DB_VERSION = 2;
 const idb = (() => {
   let dbPromise = null;
   const open = () => {
@@ -232,8 +236,9 @@ const idb = (() => {
       const req = indexedDB.open(DB_NAME, DB_VERSION);
       req.onupgradeneeded = () => {
         const db = req.result;
-        if (!db.objectStoreNames.contains('cases'))   db.createObjectStore('cases',   { keyPath: 'id' });
-        if (!db.objectStoreNames.contains('handles')) db.createObjectStore('handles', { keyPath: 'id' });
+        if (!db.objectStoreNames.contains('cases'))    db.createObjectStore('cases',    { keyPath: 'id' });
+        if (!db.objectStoreNames.contains('handles'))  db.createObjectStore('handles',  { keyPath: 'id' });
+        if (!db.objectStoreNames.contains('autosave')) db.createObjectStore('autosave', { keyPath: 'id' });
       };
       req.onsuccess = () => resolve(req.result);
       req.onerror = () => reject(req.error);
@@ -257,6 +262,9 @@ const idb = (() => {
     listCases:  ()   => tx('cases', 'readonly',  s => s.getAll()),
     putHandle:  (h)  => tx('handles', 'readwrite', s => s.put(h)),
     getHandle:  (id) => tx('handles', 'readonly',  s => s.get(id)),
+    putAutosave:    (a) => tx('autosave', 'readwrite', s => s.put(a)),
+    getAutosave:    ()  => tx('autosave', 'readonly',  s => s.get('current')),
+    deleteAutosave: ()  => tx('autosave', 'readwrite', s => s.delete('current')),
   };
 })();
 
@@ -334,7 +342,114 @@ const makeThumbnail = (src) => new Promise((resolve) => {
 // ============================================================
 // MAIN APP
 // ============================================================
+// ============================================================
+// SPLASH SCREEN — shown once per session on app open
+// ============================================================
+function SplashScreen({ onDone }) {
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const icon    = el.querySelector('#sp-icon');
+    const title   = el.querySelector('#sp-title');
+    const subRow  = el.querySelector('#sp-sub-row');
+    const overlay = el;
+
+    // Reset
+    icon.style.cssText   = 'opacity:0;transform:scale(0.5) rotate(-20deg);transition:none;';
+    title.style.cssText  = "font-family:'Geist',system-ui,-apple-system,sans-serif;font-size:46px;font-weight:600;letter-spacing:-0.03em;line-height:1;color:#0f172a;margin:0;padding:0;opacity:0;transform:translateX(-12px);transition:none;";
+    subRow.style.cssText = 'display:flex;align-items:center;gap:8px;margin-top:6px;opacity:0;transform:translateX(-8px);transition:none;';
+
+    const t = (ms, fn) => setTimeout(fn, ms);
+
+    // Logo spring in
+    t(180, () => {
+      icon.style.transition = 'opacity 0.5s ease, transform 0.7s cubic-bezier(0.34,1.56,0.64,1)';
+      icon.style.opacity = '1';
+      icon.style.transform = 'scale(1) rotate(0deg)';
+    });
+
+    // Title slides in
+    t(580, () => {
+      title.style.transition = 'opacity 0.45s ease, transform 0.45s cubic-bezier(0.22,1,0.36,1)';
+      title.style.opacity = '1';
+      title.style.transform = 'translateX(0)';
+    });
+
+    // Subtitle slides in
+    t(760, () => {
+      subRow.style.transition = 'opacity 0.4s ease, transform 0.4s cubic-bezier(0.22,1,0.36,1)';
+      subRow.style.opacity = '1';
+      subRow.style.transform = 'translateX(0)';
+    });
+
+    // Fade out + done
+    t(2000, () => {
+      overlay.style.transition = 'opacity 0.5s ease';
+      overlay.style.opacity = '0';
+    });
+    t(2520, () => onDone());
+  }, []);
+
+  return (
+    <div ref={ref} style={{
+      position: 'fixed', inset: 0, zIndex: 999,
+      background: '#ffffff',
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      fontFamily: "'Geist', system-ui, -apple-system, sans-serif",
+    }}>
+      {/* Subtle ambient blobs */}
+      <div style={{ position:'absolute', top:'-10%', right:'-10%', width:500, height:500,
+        background:'radial-gradient(circle,rgba(57,191,240,0.08) 0%,transparent 65%)',
+        pointerEvents:'none' }} />
+      <div style={{ position:'absolute', bottom:'-10%', left:'-10%', width:560, height:560,
+        background:'radial-gradient(circle,rgba(99,102,241,0.06) 0%,transparent 65%)',
+        pointerEvents:'none' }} />
+
+      {/* Logo + wordmark row */}
+      <div style={{ position:'relative', zIndex:2, display:'flex', alignItems:'center', gap:20 }}>
+        <svg id="sp-icon" width="80" height="80" viewBox="0 0 48 48" fill="none">
+          <rect width="48" height="48" rx="13" fill="#39bff0"/>
+          <rect x="11" y="11" width="10" height="10" rx="2.5" fill="white" opacity="0.95"/>
+          <rect x="27" y="11" width="10" height="10" rx="2.5" fill="white" opacity="0.4"/>
+          <rect x="11" y="27" width="10" height="10" rx="2.5" fill="white" opacity="0.4"/>
+          <rect x="27" y="27" width="10" height="10" rx="2.5" fill="white" opacity="0.95"/>
+          <line x1="16" y1="21" x2="16" y2="27" stroke="white" strokeWidth="1.5" opacity="0.5" strokeLinecap="round"/>
+          <line x1="32" y1="21" x2="32" y2="27" stroke="white" strokeWidth="1.5" opacity="0.5" strokeLinecap="round"/>
+        </svg>
+
+        <div style={{ display:'flex', flexDirection:'column', gap:0 }}>
+          <div id="sp-title" style={{
+            fontFamily: "'Geist', system-ui, -apple-system, sans-serif",
+            fontSize: '46px', fontWeight: 600, letterSpacing: '-0.03em',
+            lineHeight: 1, color: '#0f172a', margin: 0, padding: 0,
+          }}>
+            Ortho<span style={{ color:'#39bff0' }}>Board</span>
+          </div>
+          <div id="sp-sub-row" style={{ display:'flex', alignItems:'center', gap:8, marginTop:6 }}>
+            <span style={{
+              fontFamily: "'Geist', system-ui, -apple-system, sans-serif",
+              fontSize: '9.5px', fontWeight: 400, letterSpacing: '0.18em',
+              textTransform: 'uppercase', color: 'rgba(0,0,0,0.35)',
+            }}>Treatment Planning Workspace</span>
+            <span style={{ width:2, height:2, borderRadius:'50%', background:'rgba(0,0,0,0.2)', flexShrink:0, display:'inline-block' }}/>
+            <span style={{
+              fontFamily: "'Geist', system-ui, -apple-system, sans-serif",
+              fontSize: '9.5px', fontWeight: 400, letterSpacing: '0.08em',
+              color: 'rgba(0,0,0,0.25)',
+            }}>by OrthoTimes</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function App() {
+  const [showSplash, setShowSplash] = useState(() => !sessionStorage.getItem('orthoboard-splash-seen'));
+  const hideSplash = () => { sessionStorage.setItem('orthoboard-splash-seen', '1'); setShowSplash(false); };
   const [dark, setDark] = useState(() => {
     const saved = localStorage.getItem('orthoboard-theme');
     if (saved) return saved === 'dark';
@@ -356,6 +471,8 @@ function App() {
   const [isDirty, setIsDirty] = useState(false);
   const [unsavedModal, setUnsavedModal] = useState(null);
   const [clearModal, setClearModal] = useState(false);
+  const [duplicateModal, setDuplicateModal] = useState(null);
+  const [nameModal, setNameModal] = useState(null); // { onAfterSave } // { onAfterSave } | null
 
   const updateState = (updater, recordHistory = true) => {
     if (recordHistory) {
@@ -422,6 +539,7 @@ function App() {
   const [showDashboard, setShowDashboard] = useState(false);
   const [folderHandle, setFolderHandle] = useState(null);
   const [currentCaseId, setCurrentCaseId] = useState(null); // for IDB-backed cases
+  const [originalCaseName, setOriginalCaseName] = useState(null); // name as loaded — null for fresh cases
   const fileInputRef = useRef(null);
   const loadInputRef = useRef(null);
 
@@ -453,24 +571,79 @@ function App() {
     state,
   });
 
+  // ── AUTOSAVE: snapshot to IndexedDB every 30s while dirty ──
+  const [recoveryAvailable, setRecoveryAvailable] = useState(null);
+  const [autosaveStatus, setAutosaveStatus] = useState(null); // null | 'saving' | 'saved'
+
+  useEffect(() => {
+    if (!isDirty) return;
+    const id = setInterval(async () => {
+      try {
+        setAutosaveStatus('saving');
+        await idb.putAutosave({
+          id: 'current',
+          caseName,
+          savedAt: new Date().toISOString(),
+          payload: buildPayload(),
+        });
+        setAutosaveStatus('saved');
+        setTimeout(() => setAutosaveStatus(null), 1500);
+      } catch (e) { console.warn('Autosave failed:', e); setAutosaveStatus(null); }
+    }, 30000);
+    return () => clearInterval(id);
+  }, [isDirty, caseName, state]);
+
+  // Save snapshot before tab/window close
+  useEffect(() => {
+    const onBeforeUnload = () => {
+      if (!isDirty) return;
+      try {
+        idb.putAutosave({
+          id: 'current',
+          caseName,
+          savedAt: new Date().toISOString(),
+          payload: buildPayload(),
+        });
+      } catch {}
+    };
+    window.addEventListener('beforeunload', onBeforeUnload);
+    return () => window.removeEventListener('beforeunload', onBeforeUnload);
+  }, [isDirty, caseName, state]);
+
+  // Check for autosave recovery on first load
+  useEffect(() => {
+    (async () => {
+      try {
+        const snap = await idb.getAutosave();
+        if (snap?.payload) setRecoveryAvailable(snap);
+      } catch {}
+    })();
+  }, []);
+
   // ── SAVE STATE ──────────────────────────────────────────
   const [saveStatus, setSaveStatus] = useState(null); // null | 'saving' | 'saved' | 'error'
   const [showFirstSaveModal, setShowFirstSaveModal] = useState(false);
 
-  // Internal: actually write the file
-  const writeCaseFile = async () => {
-    const payload = buildPayload();
-    const safe = caseName.replace(/[^a-z0-9]+/gi, '_').toLowerCase() || 'case';
+  // Internal: actually write the file. Optional `nameOverride` skips closure issues
+  // when caller has just called setCaseName (state hasn't propagated yet).
+  const writeCaseFile = async (nameOverride) => {
+    const effectiveName = nameOverride || caseName;
+    const payload = { ...buildPayload(), caseName: effectiveName };
+    const safe = effectiveName.replace(/[^a-z0-9]+/gi, '_').toLowerCase() || 'case';
     const filename = `${safe}.orthoboard.json`;
+    console.log('[Save] folderHandle:', !!folderHandle, '| name:', effectiveName, '| filename:', filename);
+
+    const renamed = originalCaseName !== null
+                    && effectiveName.trim().toLowerCase() !== originalCaseName.trim().toLowerCase();
 
     if (folderHandle) {
-      // Write case file
+      console.log('[Save] Writing to folder...');
       const fileHandle = await folderHandle.getFileHandle(filename, { create: true });
       const writable = await fileHandle.createWritable();
       await writable.write(JSON.stringify(payload));
       await writable.close();
+      console.log('[Save] File written OK, updating index...');
 
-      // Build tiny thumbnails for index (parallel)
       const photos = state.photos || [];
       const byCat = (cat) => photos.find(p => p.category === cat)?.src || null;
       const [t0, t1, t2] = await Promise.all([
@@ -479,10 +652,9 @@ function App() {
         makeThumbnail(byCat('xray')),
       ]);
 
-      // Update index file
       const index = await readIndex(folderHandle);
       index[filename] = {
-        name: caseName,
+        name: effectiveName,
         savedAt: payload.savedAt,
         photoCount: photos.length,
         peekPhotos: [t0, t1, t2],
@@ -493,7 +665,6 @@ function App() {
     }
 
     if (!hasFileSystemAccess) {
-      // Firefox/Safari: IndexedDB + download
       const photos = state.photos || [];
       const byCat = (cat) => photos.find(p => p.category === cat)?.src || null;
       const [t0, t1, t2] = await Promise.all([
@@ -501,9 +672,9 @@ function App() {
         makeThumbnail(byCat('intraoral')),
         makeThumbnail(byCat('xray')),
       ]);
-      const id = currentCaseId || crypto.randomUUID();
+      const id = (renamed ? null : currentCaseId) || crypto.randomUUID();
       await idb.putCase({
-        id, name: caseName, savedAt: payload.savedAt, payload,
+        id, name: effectiveName, savedAt: payload.savedAt, payload,
         peekPhotos: [t0, t1, t2],
         chiefComplaint: state.patientInfo?.chiefComplaint || '',
       });
@@ -519,24 +690,53 @@ function App() {
   };
 
   // ── SAVE: triggered by user ─────────────────────────────
-  const saveCase = async () => {
+  const saveCase = async (onAfterSave) => {
     // Chrome/Edge with no folder → first-time modal
     if (hasFileSystemAccess && !folderHandle) {
       setShowFirstSaveModal(true);
       return;
     }
+
+    // If still using the default name on a fresh case, ask for a name
+    const isDefaultName = caseName.trim().toLowerCase() === 'new case';
+    if (isDefaultName && originalCaseName === null) {
+      setNameModal({ onAfterSave });
+      return;
+    }
+
+    // Skip duplicate check if saving back to same file
+    const sameAsOriginal = originalCaseName !== null
+                           && caseName.trim().toLowerCase() === originalCaseName.trim().toLowerCase();
+
+    let exists = false;
+    if (!sameAsOriginal && currentCaseId === null) {
+      const safe = caseName.replace(/[^a-z0-9]+/gi, '_').toLowerCase() || 'case';
+      const filename = `${safe}.orthoboard.json`;
+      if (folderHandle) {
+        try { const index = await readIndex(folderHandle); exists = filename in index; } catch {}
+      } else if (!hasFileSystemAccess) {
+        try { const all = await idb.listCases(); exists = all.some(c => c.name.toLowerCase() === caseName.toLowerCase()); } catch {}
+      }
+    }
+
+    if (exists) { setDuplicateModal({ onAfterSave }); return; }
+
     await runSave();
+    setOriginalCaseName(caseName);
+    if (onAfterSave) onAfterSave();
   };
 
-  const runSave = async () => {
+  const runSave = async (nameOverride) => {
     setSaveStatus('saving');
     try {
-      await writeCaseFile();
+      await writeCaseFile(nameOverride);
       setIsDirty(false);
+      try { await idb.deleteAutosave(); } catch {}
       setSaveStatus('saved');
       setTimeout(() => setSaveStatus(null), 1200);
     } catch (err) {
-      console.error(err);
+      console.error('Save failed:', err);
+      alert('Save failed: ' + err.name + ' — ' + err.message);
       setSaveStatus('error');
       setTimeout(() => setSaveStatus(null), 2500);
     }
@@ -581,6 +781,7 @@ function App() {
     setState(data.state);
     if (data.caseName) setCaseName(data.caseName);
     setCurrentCaseId(idForIDB);
+    setOriginalCaseName(data.caseName || null);
     historyRef.current = [];
     futureRef.current = [];
     setIsDirty(false);
@@ -604,6 +805,7 @@ function App() {
                patientInfo: { age: '', sex: '', chiefComplaint: '', medicalHistory: '', notes: '' } });
     setCaseName('New Case');
     setCurrentCaseId(null);
+    setOriginalCaseName(null);
     historyRef.current = [];
     futureRef.current = [];
     setIsDirty(false);
@@ -869,20 +1071,28 @@ function App() {
       ...(toolDef.id === 'vline'  && { x: 0.5, y1: 0.1, y2: 0.9 }),
       ...(toolDef.id === 'hline'  && { y: 0.5, x1: 0.1, x2: 0.9 }),
       ...(toolDef.id === 'curve'  && { points: [
-        { x: 0.2, y: 0.55 },
-        { x: 0.4, y: 0.45 },
-        { x: 0.6, y: 0.45 },
-        { x: 0.8, y: 0.55 },
+        { x: 0.2, y: 0.45 },
+        { x: 0.4, y: 0.55 },
+        { x: 0.6, y: 0.55 },
+        { x: 0.8, y: 0.45 },
       ] }),
       ...(toolDef.id === 'smileline' && { points: [
-        { x: 0.2, y: 0.65 },
-        { x: 0.4, y: 0.58 },
-        { x: 0.6, y: 0.58 },
-        { x: 0.8, y: 0.65 },
+        { x: 0.2, y: 0.55 },
+        { x: 0.4, y: 0.65 },
+        { x: 0.6, y: 0.65 },
+        { x: 0.8, y: 0.55 },
       ] }),
       ...(toolDef.id === 'teeth'  && {
         x: 0.1, y: 0.25, w: 0.8, h: 0.5,
         ratios: [0.382, 0.618, 1.0, 1.0, 0.618, 0.382],
+      }),
+      ...(toolDef.id === 'fifths' && {
+        // Simple box that contains 5 equal vertical divisions
+        x: 0.15, y: 0.35, w: 0.7, h: 0.18,
+      }),
+      ...(toolDef.id === 'thirds' && {
+        // Simple box that contains 3 equal horizontal divisions
+        x: 0.3, y: 0.15, w: 0.4, h: 0.7,
       }),
       ...(toolDef.id === 'angle'  && {
         apex: { x: 0.5, y: 0.6 },
@@ -931,6 +1141,7 @@ function App() {
 
   return (
     <ThemeContext.Provider value={{ dark, setDark }}>
+      {showSplash && <SplashScreen onDone={hideSplash} />}
       <div className={`fixed inset-0 overflow-hidden ${dark ? 'bg-neutral-950' : 'bg-stone-50'}`}
            onDragEnter={(e) => { e.preventDefault(); dragCounterRef.current++; if (e.dataTransfer.types.includes('Files')) setDropOverlay(true); }}
            onDragLeave={() => { dragCounterRef.current--; if (dragCounterRef.current <= 0) { dragCounterRef.current = 0; setDropOverlay(false); } }}
@@ -956,7 +1167,12 @@ function App() {
                 await idb.putHandle({ id: 'main', handle });
                 setFolderHandle(handle);
                 setPendingFolderHandle(null);
-              } catch {}
+              } catch (err) {
+                if (err.name !== 'AbortError') {
+                  console.error('Folder picker error:', err);
+                  alert('Could not connect folder: ' + err.message);
+                }
+              }
             }}
             onReconnectFolder={async () => {
               try {
@@ -975,6 +1191,16 @@ function App() {
             onOpenCase={loadFromPayload}
             onLoadFile={loadCase}
             onNewCase={newCase}
+            recoveryAvailable={recoveryAvailable}
+            onRecover={() => {
+              loadFromPayload(recoveryAvailable.payload);
+              setRecoveryAvailable(null);
+              idb.deleteAutosave().catch(() => {});
+            }}
+            onDismissRecovery={() => {
+              setRecoveryAvailable(null);
+              idb.deleteAutosave().catch(() => {});
+            }}
           />
         )}
         {saveStatus && (
@@ -1019,6 +1245,17 @@ function App() {
           </div>
         )}
 
+        {/* Autosave indicator — small, bottom-right corner */}
+        {autosaveStatus && !saveStatus && (
+          <div className={`fixed bottom-4 right-4 z-[55] px-3 py-2 rounded-lg shadow-md flex items-center gap-2 text-xs font-medium
+                          ${dark ? 'bg-neutral-900 border border-neutral-800 text-neutral-300'
+                                 : 'bg-white border border-neutral-200 text-neutral-600'}`}>
+            {autosaveStatus === 'saving'
+              ? <><div className="w-3 h-3 rounded-full border-[1.5px] border-emerald-500 border-t-transparent animate-spin" /> Auto-saving…</>
+              : <><div className="w-2 h-2 rounded-full bg-emerald-500" /> Auto-saved</>}
+          </div>
+        )}
+
         {showFirstSaveModal && (
           <FirstSaveModal
             onChoose={chooseFolderThenSave}
@@ -1028,7 +1265,7 @@ function App() {
         {unsavedModal && (
           <UnsavedModal
             caseName={caseName}
-            onSave={() => { const p = unsavedModal.onProceed; setUnsavedModal(null); saveCase(); p(); }}
+            onSave={() => { const p = unsavedModal.onProceed; setUnsavedModal(null); saveCase(p); }}
             onDiscard={() => { const p = unsavedModal.onProceed; setUnsavedModal(null); p(); }}
             onCancel={() => setUnsavedModal(null)}
           />
@@ -1041,6 +1278,40 @@ function App() {
             danger
             onConfirm={() => { setClearModal(false); updateState({ photos: [], strokes: [], lines: [], measures: [], notes: [] }); setSelectedPhotoId(null); }}
             onCancel={() => setClearModal(false)}
+          />
+        )}
+        {duplicateModal && (
+          <DuplicateModal
+            currentName={caseName}
+            onReplace={async () => {
+              const cb = duplicateModal.onAfterSave;
+              setDuplicateModal(null);
+              await runSave();
+              setOriginalCaseName(caseName);
+              if (cb) cb();
+            }}
+            onRename={async (newName) => {
+              const cb = duplicateModal.onAfterSave;
+              setDuplicateModal(null);
+              setCaseName(newName);
+              await runSave(newName);
+              setOriginalCaseName(newName);
+              if (cb) cb();
+            }}
+            onCancel={() => setDuplicateModal(null)}
+          />
+        )}
+        {nameModal && (
+          <NameCaseModal
+            onConfirm={async (newName) => {
+              const cb = nameModal.onAfterSave;
+              setNameModal(null);
+              setCaseName(newName);
+              await runSave(newName);
+              setOriginalCaseName(newName);
+              if (cb) cb();
+            }}
+            onCancel={() => setNameModal(null)}
           />
         )}
         <Canvas
@@ -1067,18 +1338,23 @@ function App() {
                            ${dark ? 'bg-gradient-to-b from-neutral-950/95 to-neutral-950/0'
                                   : 'bg-gradient-to-b from-stone-50/95 to-stone-50/0'}`}>
           <div className="pointer-events-auto flex items-center gap-3">
-            <div className={`w-9 h-9 rounded-lg flex items-center justify-center
-                           ${dark ? 'bg-neutral-100' : 'bg-neutral-900'}`}>
-              <div className="w-3 h-3 rounded-sm bg-amber-300"></div>
-            </div>
+            <svg width="52" height="52" viewBox="0 0 48 48" fill="none" style={{ flexShrink:0 }}>
+              <rect width="48" height="48" rx="10" fill="#39bff0"/>
+              <rect x="11" y="11" width="10" height="10" rx="2.5" fill="white" opacity="0.95"/>
+              <rect x="27" y="11" width="10" height="10" rx="2.5" fill="white" opacity="0.4"/>
+              <rect x="11" y="27" width="10" height="10" rx="2.5" fill="white" opacity="0.4"/>
+              <rect x="27" y="27" width="10" height="10" rx="2.5" fill="white" opacity="0.95"/>
+              <line x1="16" y1="21" x2="16" y2="27" stroke="white" strokeWidth="1.5" opacity="0.5"/>
+              <line x1="32" y1="21" x2="32" y2="27" stroke="white" strokeWidth="1.5" opacity="0.5"/>
+            </svg>
             <div>
               <h1 className={`font-display text-2xl leading-none tracking-tight
                              ${dark ? 'text-neutral-50' : 'text-neutral-900'}`}>
-                Orthoboard
+                Ortho<span style={{ color: '#39bff0' }}>Board</span>
               </h1>
               <p className={`text-[10px] tracking-[0.18em] uppercase mt-1 font-medium
                             ${dark ? 'text-neutral-500' : 'text-neutral-400'}`}>
-                The Ultimate Treatment Planning Workspace
+                Treatment Planning Workspace
               </p>
             </div>
           </div>
@@ -1273,6 +1549,7 @@ function Canvas({
   const [isDrawing, setIsDrawing] = useState(false);
   const [currentStroke, setCurrentStroke] = useState(null);
   const [currentMeasure, setCurrentMeasure] = useState(null);
+  const [draggingEndpoint, setDraggingEndpoint] = useState(null); // { id, endpoint: 'p1'|'p2' }
   const [draggedPhoto, setDraggedPhoto] = useState(null);
   const [resizingPhoto, setResizingPhoto] = useState(null);
   const [draggedNote, setDraggedNote] = useState(null);
@@ -1435,6 +1712,14 @@ function Canvas({
     } else if (isDrawing && currentMeasure) {
       const world = screenToWorld(pt);
       setCurrentMeasure(m => ({ ...m, x2: world.x, y2: world.y }));
+    } else if (draggingEndpoint) {
+      const world = screenToWorld(pt);
+      setMeasuresLive(ms => ms.map(m => {
+        if (m.id !== draggingEndpoint.id) return m;
+        return draggingEndpoint.endpoint === 'p1'
+          ? { ...m, x1: world.x, y1: world.y }
+          : { ...m, x2: world.x, y2: world.y };
+      }));
     } else if (draggedPhoto) {
       setPhotosLive(prev => prev.map(p => p.id === draggedPhoto
         ? { ...p, x: p.x + dx / viewport.zoom, y: p.y + dy / viewport.zoom } : p));
@@ -1454,6 +1739,7 @@ function Canvas({
       if (len > 5) setMeasures(m => [...m, currentMeasure]);
       setCurrentMeasure(null);
     }
+    if (draggingEndpoint) { setMeasures(ms => [...ms]); setDraggingEndpoint(null); }
     setIsDrawing(false);
     if (draggedPhoto) setPhotos(p => [...p]);
     if (draggedNote) setNotes(n => [...n]);
@@ -1525,21 +1811,26 @@ function Canvas({
           ))}
 
           {[...measures, currentMeasure].filter(Boolean).map(m => {
-            const dist = Math.round(Math.hypot(m.x2 - m.x1, m.y2 - m.y1));
+            const pxDist = Math.round(Math.hypot(m.x2 - m.x1, m.y2 - m.y1));
             const midX = (m.x1 + m.x2) / 2;
             const midY = (m.y1 + m.y2) / 2;
             let angle = Math.atan2(m.y2 - m.y1, m.x2 - m.x1) * 180 / Math.PI;
             if (angle > 90 || angle < -90) angle += 180;
+            const isDraggable = !currentMeasure;
             return (
               <g key={m.id}>
                 <line x1={m.x1} y1={m.y1} x2={m.x2} y2={m.y2} stroke="#0891b2" strokeWidth={2} />
-                <circle cx={m.x1} cy={m.y1} r={4} fill="#0891b2" />
-                <circle cx={m.x2} cy={m.y2} r={4} fill="#0891b2" />
+                <circle cx={m.x1} cy={m.y1} r={6} fill="#0891b2"
+                  style={{ cursor: isDraggable ? 'grab' : 'default', pointerEvents: isDraggable ? 'auto' : 'none' }}
+                  onPointerDown={isDraggable ? (e) => { e.stopPropagation(); e.preventDefault(); setDraggingEndpoint({ id: m.id, endpoint: 'p1' }); } : undefined} />
+                <circle cx={m.x2} cy={m.y2} r={6} fill="#0891b2"
+                  style={{ cursor: isDraggable ? 'grab' : 'default', pointerEvents: isDraggable ? 'auto' : 'none' }}
+                  onPointerDown={isDraggable ? (e) => { e.stopPropagation(); e.preventDefault(); setDraggingEndpoint({ id: m.id, endpoint: 'p2' }); } : undefined} />
                 <g transform={`translate(${midX}, ${midY}) rotate(${angle})`}>
-                  <rect x={-32} y={-22} width={64} height={16} fill="#0891b2" rx={3} />
+                  <rect x={-28} y={-22} width={56} height={16} fill="#0891b2" rx={3} />
                   <text x={0} y={-10} textAnchor="middle" fontSize={11}
                         fill="white" fontFamily="Geist Mono, monospace">
-                    {dist} px
+                    {pxDist} px
                   </text>
                 </g>
               </g>
@@ -1766,6 +2057,30 @@ function DiagnosticItem({ item, photo, editable, onUpdate, onCommit, onDelete })
         if (drag.type === 'p1')   onUpdate({ p1:   { x: cx, y: cy } });
         if (drag.type === 'p2')   onUpdate({ p2:   { x: cx, y: cy } });
       }
+      if (item.type === 'fifths' || item.type === 'thirds') {
+        if (drag.type === 'corner') {
+          const corner = drag.idx;
+          let nc = { x: item.x, y: item.y, w: item.w, h: item.h };
+          if (corner.includes('e')) nc.w = Math.max(0.05, cx - item.x);
+          if (corner.includes('s')) nc.h = Math.max(0.03, cy - item.y);
+          if (corner.includes('w')) {
+            const newX = Math.min(item.x + item.w - 0.05, cx);
+            nc.w = item.x + item.w - newX;
+            nc.x = newX;
+          }
+          if (corner.includes('n')) {
+            const newY = Math.min(item.y + item.h - 0.03, cy);
+            nc.h = item.y + item.h - newY;
+            nc.y = newY;
+          }
+          onUpdate(nc);
+        } else if (drag.type === 'body') {
+          onUpdate({
+            x: Math.max(0, Math.min(1 - drag.startItem.w, drag.startItem.x + dx)),
+            y: Math.max(0, Math.min(1 - drag.startItem.h, drag.startItem.y + dy)),
+          });
+        }
+      }
     };
     const onUp = () => { onCommit(); setDrag(null); };
     window.addEventListener('pointermove', onMove);
@@ -1888,12 +2203,14 @@ function DiagnosticItem({ item, photo, editable, onUpdate, onCommit, onDelete })
                     fill={stroke} opacity={0.6} fontFamily="Geist, system-ui, sans-serif">
                 {LABELS[i]}
               </text>
-              {/* W:H ratio — middle of tooth */}
-              <text x={cx} y={boxY + boxH / 2 + fs * 0.4}
-                    textAnchor="middle" fontSize={fs}
-                    fill={stroke} fontFamily="Geist Mono, monospace" fontWeight="600">
-                {wh}%
-              </text>
+              {/* W:H ratio — shown only on central incisors (i=2, i=3) */}
+              {(i === 2 || i === 3) && (
+                <text x={cx} y={boxY + boxH / 2 + fs * 0.4}
+                      textAnchor="middle" fontSize={fs}
+                      fill={stroke} fontFamily="Geist Mono, monospace" fontWeight="600">
+                  {wh}%
+                </text>
+              )}
               {/* Proportion relative to central — below box */}
               <text x={cx} y={boxY + boxH + fs * 1.5}
                     textAnchor="middle" fontSize={Math.max(6, fs * 0.85)}
@@ -1915,6 +2232,85 @@ function DiagnosticItem({ item, photo, editable, onUpdate, onCommit, onDelete })
                   onPointerDown={(e) => onPtDown(e, 'corner', c)} />
           );
         })}
+        {editable && <DeleteHandle x={boxX + boxW + 8} y={boxY - 14} onDelete={onDelete} r={handleR} />}
+      </g>
+    );
+  }
+
+  if (item.type === 'fifths') {
+    const boxX = px(item.x), boxY = py(item.y);
+    const boxW = px(item.w), boxH = py(item.h);
+    const segW = boxW / 5;
+    return (
+      <g>
+        {/* Body — drag whole thing */}
+        <rect x={boxX} y={boxY} width={boxW} height={boxH}
+              fill="rgba(220,38,38,0.04)" stroke={stroke} strokeWidth={sw}
+              style={{ cursor: editable ? 'move' : 'default' }}
+              onPointerDown={(e) => editable && onPtDown(e, 'body')} />
+
+        {/* 4 internal vertical dividers (always equal) */}
+        {[1, 2, 3, 4].map(i => (
+          <line key={i}
+                x1={boxX + i * segW} y1={boxY}
+                x2={boxX + i * segW} y2={boxY + boxH}
+                stroke={stroke} strokeWidth={sw * 0.7} strokeDasharray="3 2" />
+        ))}
+
+        {/* Corner resize handles */}
+        {editable && ['nw','ne','sw','se'].map(c => {
+          const cx = boxX + (c.includes('e') ? boxW : 0);
+          const cy = boxY + (c.includes('s') ? boxH : 0);
+          return (
+            <rect key={c} x={cx - handleR} y={cy - handleR}
+                  width={handleR * 2} height={handleR * 2}
+                  fill="white" stroke={stroke} strokeWidth={2}
+                  style={{ cursor: c.includes('n')
+                    ? (c.includes('w') ? 'nwse-resize' : 'nesw-resize')
+                    : (c.includes('w') ? 'nesw-resize' : 'nwse-resize') }}
+                  onPointerDown={(e) => onPtDown(e, 'corner', c)} />
+          );
+        })}
+
+        {editable && <DeleteHandle x={boxX + boxW + 8} y={boxY - 14} onDelete={onDelete} r={handleR} />}
+      </g>
+    );
+  }
+
+  if (item.type === 'thirds') {
+    const boxX = px(item.x), boxY = py(item.y);
+    const boxW = px(item.w), boxH = py(item.h);
+    const segH = boxH / 3;
+    return (
+      <g>
+        {/* Body */}
+        <rect x={boxX} y={boxY} width={boxW} height={boxH}
+              fill="rgba(220,38,38,0.04)" stroke={stroke} strokeWidth={sw}
+              style={{ cursor: editable ? 'move' : 'default' }}
+              onPointerDown={(e) => editable && onPtDown(e, 'body')} />
+
+        {/* 2 internal horizontal dividers */}
+        {[1, 2].map(i => (
+          <line key={i}
+                x1={boxX} y1={boxY + i * segH}
+                x2={boxX + boxW} y2={boxY + i * segH}
+                stroke={stroke} strokeWidth={sw * 0.7} strokeDasharray="3 2" />
+        ))}
+
+        {editable && ['nw','ne','sw','se'].map(c => {
+          const cx = boxX + (c.includes('e') ? boxW : 0);
+          const cy = boxY + (c.includes('s') ? boxH : 0);
+          return (
+            <rect key={c} x={cx - handleR} y={cy - handleR}
+                  width={handleR * 2} height={handleR * 2}
+                  fill="white" stroke={stroke} strokeWidth={2}
+                  style={{ cursor: c.includes('n')
+                    ? (c.includes('w') ? 'nwse-resize' : 'nesw-resize')
+                    : (c.includes('w') ? 'nesw-resize' : 'nwse-resize') }}
+                  onPointerDown={(e) => onPtDown(e, 'corner', c)} />
+          );
+        })}
+
         {editable && <DeleteHandle x={boxX + boxW + 8} y={boxY - 14} onDelete={onDelete} r={handleR} />}
       </g>
     );
@@ -2130,6 +2526,19 @@ function Lightbox({ photo, onClose, onRotateLeft, onRotateRight, onFlipH, onFlip
   // Reset zoom when opening a different photo
   useEffect(() => { setZoom(1); setPan({ x: 0, y: 0 }); }, [photo?.id]);
 
+  const [barPos, setBarPos] = useState(null); // null = default centered position
+  const dragRef = useRef(null);
+  const onBarDragStart = (e) => {
+    e.preventDefault();
+    const bar = e.currentTarget.closest('[data-actionbar]');
+    const rect = bar.getBoundingClientRect();
+    dragRef.current = { startX: e.clientX - rect.left, startY: e.clientY - rect.top };
+    const onMove = (ev) => setBarPos({ x: ev.clientX - dragRef.current.startX, y: ev.clientY - dragRef.current.startY });
+    const onUp = () => { window.removeEventListener('pointermove', onMove); window.removeEventListener('pointerup', onUp); };
+    window.addEventListener('pointermove', onMove);
+    window.addEventListener('pointerup', onUp);
+  };
+
   if (!photo) return null;
   const totalRot = (photo.rotation || 0) + sliderAngle;
   const transform = `rotate(${totalRot}deg) scaleX(${photo.flipH ? -1 : 1}) scaleY(${photo.flipV ? -1 : 1})`;
@@ -2147,7 +2556,11 @@ function Lightbox({ photo, onClose, onRotateLeft, onRotateRight, onFlipH, onFlip
   const getSVGCoords = (e) => {
     const rect = imgContainerRef.current?.getBoundingClientRect();
     if (!rect) return { x: 0, y: 0 };
-    return { x: e.clientX - rect.left, y: e.clientY - rect.top };
+    // rect.width/height already include zoom — normalize against them, not dispW/dispH
+    return {
+      x: ((e.clientX - rect.left) / rect.width)  * dispW,
+      y: ((e.clientY - rect.top)  / rect.height) * dispH,
+    };
   };
 
   const onImgPointerDown = (e) => {
@@ -2192,7 +2605,9 @@ function Lightbox({ photo, onClose, onRotateLeft, onRotateRight, onFlipH, onFlip
         <g transform={`translate(${midX}, ${midY}) rotate(${angle})`}>
           <rect x={-34} y={-24} width={68} height={18} fill="#0891b2" rx={4} />
           <text x={0} y={-11} textAnchor="middle" fontSize={12}
-                fill="white" fontFamily="Geist Mono, monospace">{dist} px</text>
+                fill="white" fontFamily="Geist Mono, monospace">
+            {`${dist} px`}
+          </text>
         </g>
       </g>
     );
@@ -2210,8 +2625,23 @@ function Lightbox({ photo, onClose, onRotateLeft, onRotateRight, onFlipH, onFlip
         {photo.category} · full view
       </div>
 
-      <div className={`absolute top-6 left-1/2 -translate-x-1/2 z-10 rounded-xl shadow-lg
-                      ${dark ? 'bg-neutral-900 border border-neutral-800' : 'bg-white border border-neutral-200'}`}>
+      <div data-actionbar
+           className={`absolute z-10 rounded-xl shadow-lg
+                      ${dark ? 'bg-neutral-900 border border-neutral-800' : 'bg-white border border-neutral-200'}`}
+           style={barPos
+             ? { left: barPos.x, top: barPos.y }
+             : { top: 24, left: '50%', transform: 'translateX(-50%)' }}>
+        {/* Drag handle */}
+        <div onPointerDown={onBarDragStart}
+             className={`flex items-center justify-center h-4 mx-2 mt-1.5 mb-0.5 rounded cursor-grab active:cursor-grabbing
+                        ${dark ? 'hover:bg-white/10' : 'hover:bg-neutral-100'}`}
+             title="Drag to move">
+          <svg width="20" height="6" viewBox="0 0 20 6" fill="none">
+            <circle cx="4"  cy="3" r="1.2" fill={dark ? '#525252' : '#d4d4d4'}/>
+            <circle cx="10" cy="3" r="1.2" fill={dark ? '#525252' : '#d4d4d4'}/>
+            <circle cx="16" cy="3" r="1.2" fill={dark ? '#525252' : '#d4d4d4'}/>
+          </svg>
+        </div>
         {/* Toolbar buttons — compact */}
         <div className="flex items-center gap-0.5 px-1.5 py-1 [&_button]:!w-8 [&_button]:!h-8">
           <ActionBtn onClick={() => { onRotateLeft(); setSliderAngle(0); }} label="Rotate -90°">
@@ -2705,21 +3135,23 @@ function Toolbar({ tool, setTool, strokeWidth, setStrokeWidth, onDiagnosticClick
   const { dark } = React.useContext(ThemeContext);
   const showThickness = tool === 'pen' || tool === 'line';
   return (
-    <div className={`absolute left-3 sm:left-4 z-30 flex flex-col gap-1 rounded-xl p-1.5 shadow-md
+    <div className={`absolute left-3 sm:left-4 z-30 flex flex-col gap-1.5 rounded-xl p-1.5 shadow-md overflow-y-auto
                     ${dark ? 'bg-neutral-900 border border-neutral-800' : 'bg-white border border-neutral-200'}`}
-         style={{ top: 72, bottom: 80 }}>
+         style={{ top: 72, bottom: 80, maxHeight: 'calc(100vh - 152px)', scrollbarWidth: 'none' }}>
+
       {TOOLS.map(t => (
-        <ToolBtn key={t.id} IconC={t.Icon} label={t.label}
-                 active={tool === t.id} onClick={() => setTool(t.id)} />
+        <div key={t.id} className="flex-shrink-0">
+          <ToolBtn IconC={t.Icon} label={t.label}
+                   active={tool === t.id} onClick={() => setTool(t.id)} />
+        </div>
       ))}
 
       {showThickness && (
-        <div className={`px-1 py-2 border-t mt-1 ${dark ? 'border-neutral-800' : 'border-neutral-200'}`}>
+        <div className={`px-1 py-2 border-t flex-shrink-0 ${dark ? 'border-neutral-800' : 'border-neutral-200'}`}>
           <div className={`text-[9px] tracking-[0.15em] uppercase mb-1.5 font-mono text-center font-medium
                          ${dark ? 'text-neutral-500' : 'text-neutral-400'}`}>
             {strokeWidth}px
           </div>
-          {/* Horizontal slider to avoid vertical overflow */}
           <input type="range" min="1" max="20" step="1"
                  value={strokeWidth}
                  onChange={(e) => setStrokeWidth(parseInt(e.target.value))}
@@ -2728,34 +3160,48 @@ function Toolbar({ tool, setTool, strokeWidth, setStrokeWidth, onDiagnosticClick
         </div>
       )}
 
-      <div className={`h-px my-1 mx-1 ${dark ? 'bg-neutral-800' : 'bg-neutral-200'}`} />
+      <div className={`h-px mx-1 flex-shrink-0 ${dark ? 'bg-neutral-800' : 'bg-neutral-200'}`} />
       <ToolBtn IconC={IconDT}  label="Diagnostic Tools" active={diagActive} onClick={onDiagnosticClick} />
       <ToolBtn IconC={IconMaximize} label="Fit to View" onClick={onFit} />
-      <div className={`h-px my-1 mx-1 ${dark ? 'bg-neutral-800' : 'bg-neutral-200'}`} />
-      <ToolBtn IconC={IconTrash}    label="Clear All" onClick={onClear} danger />
+
+      <div className={`h-px mx-1 flex-shrink-0 ${dark ? 'bg-neutral-800' : 'bg-neutral-200'}`} />
+      <ToolBtn IconC={IconTrash} label="Clear All" onClick={onClear} danger />
     </div>
   );
 }
 
 function ToolBtn({ IconC, label, active, onClick, danger }) {
   const { dark } = React.useContext(ThemeContext);
+  const btnRef = useRef(null);
+  const [tip, setTip] = useState(null); // { x, y } | null
+
+  const onEnter = () => {
+    const r = btnRef.current?.getBoundingClientRect();
+    if (r) setTip({ x: r.right + 10, y: r.top + r.height / 2 });
+  };
+  const onLeave = () => setTip(null);
+
   return (
-    <button onClick={onClick} title={label}
-      className={`relative w-10 h-10 sm:w-11 sm:h-11 rounded-lg flex items-center justify-center transition-all group
-        ${active
-          ? (dark ? 'bg-neutral-100 text-neutral-900' : 'bg-neutral-900 text-white')
-          : danger
-            ? 'text-red-500 hover:bg-red-500/10'
-            : (dark ? 'text-neutral-300 hover:bg-neutral-800 hover:text-neutral-50'
-                    : 'text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900')}`}>
-      <IconC size={18} />
-      <span className={`absolute left-full ml-3 px-2.5 py-1 text-xs rounded-md
-                       whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none
-                       transition-opacity z-50
-                       ${dark ? 'bg-neutral-100 text-neutral-900' : 'bg-neutral-900 text-white'}`}>
-        {label}
-      </span>
-    </button>
+    <>
+      <button ref={btnRef} onClick={onClick} title=""
+        onMouseEnter={onEnter} onMouseLeave={onLeave} onFocus={onEnter} onBlur={onLeave}
+        className={`relative w-10 h-10 sm:w-11 sm:h-11 rounded-lg flex items-center justify-center transition-all
+          ${active
+            ? (dark ? 'bg-neutral-100 text-neutral-900' : 'bg-neutral-900 text-white')
+            : danger
+              ? 'text-red-500 hover:bg-red-500/10'
+              : (dark ? 'text-neutral-300 hover:bg-neutral-800 hover:text-neutral-50'
+                      : 'text-neutral-600 hover:bg-neutral-100 hover:text-neutral-900')}`}>
+        <IconC size={18} />
+      </button>
+      {tip && (
+        <span className={`fixed px-2.5 py-1 text-xs rounded-md whitespace-nowrap pointer-events-none z-[60]
+                         ${dark ? 'bg-neutral-100 text-neutral-900' : 'bg-neutral-900 text-white'}`}
+              style={{ left: tip.x, top: tip.y, transform: 'translateY(-50%)' }}>
+          {label}
+        </span>
+      )}
+    </>
   );
 }
 
@@ -2858,11 +3304,17 @@ function Sidebar({ open, setOpen, photos, onUploadClick, caseName, setCaseName,
 
           <button onClick={onUploadClick}
             className={`group relative w-full py-4 px-5 rounded-xl transition-colors
-                       flex items-center justify-center gap-2.5 font-medium text-sm
+                       flex flex-col items-center justify-center gap-1 font-medium text-sm
                        ${dark ? 'bg-neutral-100 text-neutral-900 hover:bg-white'
                               : 'bg-neutral-900 text-white hover:bg-neutral-800'}`}>
-            <IconUpload size={16} />
-            <span>Upload Photos</span>
+            <div className="flex items-center gap-2.5">
+              <IconUpload size={16} />
+              <span>Upload File</span>
+            </div>
+            <span className={`text-[10px] font-normal tracking-wide
+                             ${dark ? 'text-neutral-500' : 'text-white/50'}`}>
+              JPG · PNG · WEBP · HEIC · STL
+            </span>
           </button>
 
           <div className="grid grid-cols-2 gap-2 mt-2">
@@ -3198,7 +3650,7 @@ function strokeToPath(stroke) {
 // ============================================================
 // DASHBOARD — Cases overview screen
 // ============================================================
-function Dashboard({ folderHandle, pendingFolderHandle, onChooseFolder, onReconnectFolder, onForgetFolder, onOpenCase, onLoadFile, onNewCase }) {
+function Dashboard({ folderHandle, pendingFolderHandle, onChooseFolder, onReconnectFolder, onForgetFolder, onOpenCase, onLoadFile, onNewCase, recoveryAvailable, onRecover, onDismissRecovery }) {
   const ACCEPTED_KEY = 'orthoboard-terms-accepted';
   const { dark } = React.useContext(ThemeContext);
   const [cases, setCases] = useState([]);
@@ -3208,7 +3660,11 @@ function Dashboard({ folderHandle, pendingFolderHandle, onChooseFolder, onReconn
   const [accepted, setAccepted] = useState(() => localStorage.getItem(ACCEPTED_KEY) === 'true');
   const [importOpen, setImportOpen] = useState(false);
   const [folderPanelOpen, setFolderPanelOpen] = useState(false);
+  const [viewMode, setViewMode] = useState(() => localStorage.getItem('orthoboard-view-mode') || 'grid');
   const fileRef = useRef(null);
+
+  // Persist view mode
+  useEffect(() => { localStorage.setItem('orthoboard-view-mode', viewMode); }, [viewMode]);
 
   const handleAccept = () => { localStorage.setItem(ACCEPTED_KEY, 'true'); setAccepted(true); };
   const toggleImport = () => { setImportOpen(o => !o); setFolderPanelOpen(false); };
@@ -3404,12 +3860,28 @@ function Dashboard({ folderHandle, pendingFolderHandle, onChooseFolder, onReconn
   };
 
   return (
-    <div className={`fixed inset-0 z-40 overflow-y-auto
-                    ${dark ? 'bg-neutral-950' : 'bg-stone-50'}`}
-         style={{ backgroundImage: dark
-           ? 'radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px)'
-           : 'radial-gradient(circle, rgba(0,0,0,0.06) 1px, transparent 1px)',
-           backgroundSize: '28px 28px' }}>
+    <div className="fixed inset-0 z-40 overflow-y-auto"
+         style={{
+           background: dark
+             ? 'linear-gradient(135deg, #0f172a 0%, #1a1f3a 35%, #2d1b4e 70%, #0f172a 100%)'
+             : 'linear-gradient(135deg, #faf7ff 0%, #f0f4ff 35%, #fff5ec 70%, #f5f1ff 100%)',
+         }}>
+
+      {/* Decorative ambient blobs — pure CSS, no perf cost */}
+      <div aria-hidden style={{
+        position: 'absolute', top: '-10%', right: '-10%', width: 500, height: 500,
+        background: dark
+          ? 'radial-gradient(circle, rgba(251,191,36,0.10) 0%, transparent 60%)'
+          : 'radial-gradient(circle, rgba(251,191,36,0.18) 0%, transparent 60%)',
+        pointerEvents: 'none', filter: 'blur(40px)',
+      }} />
+      <div aria-hidden style={{
+        position: 'absolute', bottom: '-10%', left: '-10%', width: 600, height: 600,
+        background: dark
+          ? 'radial-gradient(circle, rgba(99,102,241,0.12) 0%, transparent 60%)'
+          : 'radial-gradient(circle, rgba(99,102,241,0.10) 0%, transparent 60%)',
+        pointerEvents: 'none', filter: 'blur(40px)',
+      }} />
 
       {deleteModal && (
         <ConfirmModal
@@ -3462,22 +3934,27 @@ function Dashboard({ folderHandle, pendingFolderHandle, onChooseFolder, onReconn
         </div>
       )}
 
-      <div className="max-w-5xl mx-auto px-6 py-10">
+      <div className="max-w-5xl mx-auto px-6 py-10 relative" style={{ zIndex: 1 }}>
 
         {/* Header */}
         <div className="flex items-center justify-between mb-6 flex-wrap gap-4">
           <div className="flex items-center gap-3">
-            <div className={`w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0
-                           ${dark ? 'bg-neutral-100' : 'bg-neutral-900'}`}>
-              <div className="w-4 h-4 rounded-sm bg-amber-300"></div>
-            </div>
+            <svg width="56" height="56" viewBox="0 0 48 48" fill="none" style={{ flexShrink:0, filter:'drop-shadow(0 8px 16px rgba(57,191,240,0.45))' }}>
+              <rect width="48" height="48" rx="12" fill="#39bff0"/>
+              <rect x="11" y="11" width="10" height="10" rx="2.5" fill="white" opacity="0.95"/>
+              <rect x="27" y="11" width="10" height="10" rx="2.5" fill="white" opacity="0.4"/>
+              <rect x="11" y="27" width="10" height="10" rx="2.5" fill="white" opacity="0.4"/>
+              <rect x="27" y="27" width="10" height="10" rx="2.5" fill="white" opacity="0.95"/>
+              <line x1="16" y1="21" x2="16" y2="27" stroke="white" strokeWidth="1.5" opacity="0.5"/>
+              <line x1="32" y1="21" x2="32" y2="27" stroke="white" strokeWidth="1.5" opacity="0.5"/>
+            </svg>
             <div>
               <h1 className={`font-display text-3xl leading-none tracking-tight
                              ${dark ? 'text-neutral-50' : 'text-neutral-900'}`}>
-                Orthoboard
+                Ortho<span style={{ color: '#39bff0' }}>Board</span>
               </h1>
               <p className={`text-[10px] tracking-[0.18em] uppercase mt-1 font-medium
-                            ${dark ? 'text-neutral-500' : 'text-neutral-400'}`}>
+                            ${dark ? 'text-neutral-400' : 'text-neutral-500'}`}>
                 Treatment Planning Workspace
               </p>
             </div>
@@ -3485,14 +3962,49 @@ function Dashboard({ folderHandle, pendingFolderHandle, onChooseFolder, onReconn
           <div className="flex items-center gap-2">
             <ThemeToggle />
             <button onClick={onNewCase}
-              className={`px-5 py-2.5 rounded-lg font-medium text-sm flex items-center gap-2 transition-colors
-                         ${dark ? 'bg-neutral-100 text-neutral-900 hover:bg-white'
-                                : 'bg-neutral-900 text-white hover:bg-neutral-800'}`}>
+              className="px-5 py-2.5 rounded-lg font-medium text-sm flex items-center gap-2 transition-all hover:opacity-90"
+              style={{
+                background: 'linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)',
+                color: '#1a1a1a',
+                boxShadow: '0 8px 24px -8px rgba(251,191,36,0.5)',
+              }}>
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
               New case
             </button>
           </div>
         </div>
+
+        {/* Recovery banner */}
+        {recoveryAvailable && (
+          <div className={`flex items-center justify-between gap-3 px-4 py-3 rounded-xl mb-4 border
+                          ${dark ? 'bg-emerald-500/10 border-emerald-500/20' : 'bg-emerald-50 border-emerald-200'}`}>
+            <div className="flex items-center gap-2.5">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="2" strokeLinecap="round">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                <path d="M3 3v5h5"/>
+              </svg>
+              <div>
+                <span className={`text-xs font-medium ${dark ? 'text-emerald-300' : 'text-emerald-800'}`}>
+                  Unsaved work found
+                </span>
+                <span className={`text-xs ml-1.5 ${dark ? 'text-emerald-400/70' : 'text-emerald-700/70'}`}>
+                  — <strong>{recoveryAvailable.caseName}</strong> · {new Date(recoveryAvailable.savedAt).toLocaleString()}
+                </span>
+              </div>
+            </div>
+            <div className="flex items-center gap-2 flex-shrink-0">
+              <button onClick={onRecover}
+                className="px-3 py-1.5 rounded-lg text-xs font-medium bg-emerald-500 text-white hover:bg-emerald-600 transition-colors">
+                Recover
+              </button>
+              <button onClick={onDismissRecovery}
+                className={`px-2 py-1.5 rounded-lg text-xs transition-colors
+                           ${dark ? 'text-emerald-500/60 hover:text-emerald-300' : 'text-emerald-700/60 hover:text-emerald-800'}`}>
+                Discard
+              </button>
+            </div>
+          </div>
+        )}
 
         {/* Reconnect banner — shown when folder needs permission re-grant */}
         {pendingFolderHandle && !folderHandle && (
@@ -3526,23 +4038,165 @@ function Dashboard({ folderHandle, pendingFolderHandle, onChooseFolder, onReconn
           </div>
         )}
 
-        {/* Stats — 4 cards */}
-        <div className="grid grid-cols-4 gap-3 mb-5">
-          {[
-            { label: 'Total cases', value: cases.length, big: true },
-            { label: 'This month',  value: thisMonth,    big: true },
-            { label: 'Last saved',  value: lastSaved,    big: false },
-            { label: 'Today',       value: new Date().toLocaleDateString(undefined, { weekday:'short', month:'short', day:'numeric' }), big: false },
-          ].map((s, i) => (
-            <div key={i} className={`rounded-xl p-4 border flex flex-col justify-between
-                                    ${dark ? 'bg-neutral-900 border-neutral-800' : 'bg-white border-neutral-200'}`}>
-              <div className={`text-[10px] tracking-[0.1em] uppercase font-medium mb-2
-                              ${dark ? 'text-neutral-500' : 'text-neutral-400'}`}>{s.label}</div>
-              {s.big
-                ? <div className={`text-3xl font-display font-semibold ${dark ? 'text-neutral-50' : 'text-neutral-900'}`}>{s.value}</div>
-                : <div className={`text-base font-medium ${dark ? 'text-neutral-100' : 'text-neutral-900'}`}>{s.value}</div>}
+        {/* Stats — hero "Total cases" + 3 colored glassy cards */}
+        <div className="grid gap-3 mb-5" style={{ gridTemplateColumns: '1.6fr 1fr 1fr 1fr' }}>
+          {/* Hero — Total cases (indigo) */}
+          <div className="rounded-2xl p-6 flex flex-col justify-between relative overflow-hidden"
+               style={{
+                 background: dark
+                   ? 'linear-gradient(135deg, rgba(99,102,241,0.15) 0%, rgba(139,92,246,0.10) 100%)'
+                   : 'linear-gradient(135deg, rgba(99,102,241,0.08) 0%, rgba(139,92,246,0.04) 100%)',
+                 backdropFilter: 'blur(20px)',
+                 WebkitBackdropFilter: 'blur(20px)',
+                 border: dark ? '0.5px solid rgba(99,102,241,0.25)' : '0.5px solid rgba(99,102,241,0.18)',
+                 boxShadow: dark
+                   ? '0 12px 40px -12px rgba(99,102,241,0.35), inset 0 1px 0 rgba(255,255,255,0.06)'
+                   : '0 12px 40px -12px rgba(99,102,241,0.25), inset 0 1px 0 rgba(255,255,255,0.6)',
+               }}>
+            {/* corner glow */}
+            <div aria-hidden style={{
+              position: 'absolute', top: -40, right: -40, width: 160, height: 160,
+              background: 'radial-gradient(circle, rgba(99,102,241,0.35) 0%, transparent 70%)',
+              filter: 'blur(20px)', pointerEvents: 'none',
+            }} />
+            <div className="flex items-center justify-between relative">
+              <div className={`text-[10px] tracking-[0.12em] uppercase font-medium
+                              ${dark ? 'text-indigo-300' : 'text-indigo-600'}`}>Total cases</div>
+              <div className="w-7 h-7 rounded-lg flex items-center justify-center"
+                   style={{ background: 'linear-gradient(135deg, #6366f1, #8b5cf6)', boxShadow: '0 4px 12px -4px rgba(99,102,241,0.5)' }}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round">
+                  <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+                </svg>
+              </div>
             </div>
-          ))}
+            <div className="relative">
+              <div key={dark ? 'd' : 'l'} className="font-display font-semibold leading-none tracking-tight"
+                   style={{
+                     fontSize: 56,
+                     background: dark
+                       ? 'linear-gradient(135deg, #fff 0%, #c7d2fe 100%)'
+                       : 'linear-gradient(135deg, #1a1a1a 0%, #6366f1 100%)',
+                     WebkitBackgroundClip: 'text',
+                     backgroundClip: 'text',
+                     WebkitTextFillColor: 'transparent',
+                   }}>
+                {cases.length}
+              </div>
+              {thisMonth > 0 && (
+                <div className="text-xs mt-2 font-medium" style={{ color: '#10b981' }}>
+                  ↑ {thisMonth} this month
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* This month (amber) */}
+          <div className="rounded-2xl p-4 flex flex-col justify-between relative overflow-hidden"
+               style={{
+                 background: dark
+                   ? 'linear-gradient(135deg, rgba(251,191,36,0.15) 0%, rgba(245,158,11,0.08) 100%)'
+                   : 'linear-gradient(135deg, rgba(251,191,36,0.10) 0%, rgba(245,158,11,0.04) 100%)',
+                 backdropFilter: 'blur(20px)',
+                 WebkitBackdropFilter: 'blur(20px)',
+                 border: dark ? '0.5px solid rgba(251,191,36,0.25)' : '0.5px solid rgba(251,191,36,0.20)',
+                 boxShadow: dark
+                   ? '0 12px 40px -12px rgba(251,191,36,0.30), inset 0 1px 0 rgba(255,255,255,0.06)'
+                   : '0 12px 40px -12px rgba(251,191,36,0.25), inset 0 1px 0 rgba(255,255,255,0.6)',
+               }}>
+            <div aria-hidden style={{
+              position: 'absolute', top: -30, right: -30, width: 120, height: 120,
+              background: 'radial-gradient(circle, rgba(251,191,36,0.30) 0%, transparent 70%)',
+              filter: 'blur(20px)', pointerEvents: 'none',
+            }} />
+            <div className="flex items-center justify-between relative">
+              <div className={`text-[10px] tracking-[0.12em] uppercase font-medium
+                              ${dark ? 'text-amber-300' : 'text-amber-700'}`}>This month</div>
+              <div className="w-6 h-6 rounded-md flex items-center justify-center"
+                   style={{ background: 'linear-gradient(135deg, #fbbf24, #f59e0b)' }}>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round">
+                  <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/>
+                </svg>
+              </div>
+            </div>
+            <div key={dark ? 'd' : 'l'} className="font-display font-semibold tracking-tight relative"
+                 style={{
+                   fontSize: 32,
+                   background: dark
+                     ? 'linear-gradient(135deg, #fff 0%, #fde68a 100%)'
+                     : 'linear-gradient(135deg, #1a1a1a 0%, #d97706 100%)',
+                   WebkitBackgroundClip: 'text',
+                   backgroundClip: 'text',
+                   WebkitTextFillColor: 'transparent',
+                 }}>
+              {thisMonth}
+            </div>
+          </div>
+
+          {/* Last saved (emerald) */}
+          <div className="rounded-2xl p-4 flex flex-col justify-between relative overflow-hidden"
+               style={{
+                 background: dark
+                   ? 'linear-gradient(135deg, rgba(16,185,129,0.15) 0%, rgba(5,150,105,0.08) 100%)'
+                   : 'linear-gradient(135deg, rgba(16,185,129,0.10) 0%, rgba(5,150,105,0.04) 100%)',
+                 backdropFilter: 'blur(20px)',
+                 WebkitBackdropFilter: 'blur(20px)',
+                 border: dark ? '0.5px solid rgba(16,185,129,0.25)' : '0.5px solid rgba(16,185,129,0.20)',
+                 boxShadow: dark
+                   ? '0 12px 40px -12px rgba(16,185,129,0.30), inset 0 1px 0 rgba(255,255,255,0.06)'
+                   : '0 12px 40px -12px rgba(16,185,129,0.25), inset 0 1px 0 rgba(255,255,255,0.6)',
+               }}>
+            <div aria-hidden style={{
+              position: 'absolute', top: -30, right: -30, width: 120, height: 120,
+              background: 'radial-gradient(circle, rgba(16,185,129,0.30) 0%, transparent 70%)',
+              filter: 'blur(20px)', pointerEvents: 'none',
+            }} />
+            <div className="flex items-center justify-between relative">
+              <div className={`text-[10px] tracking-[0.12em] uppercase font-medium
+                              ${dark ? 'text-emerald-300' : 'text-emerald-700'}`}>Last saved</div>
+              <div className="w-6 h-6 rounded-md flex items-center justify-center"
+                   style={{ background: 'linear-gradient(135deg, #10b981, #059669)' }}>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round">
+                  <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+                  <polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/>
+                </svg>
+              </div>
+            </div>
+            <div className={`text-sm font-medium relative ${dark ? 'text-emerald-50' : 'text-neutral-900'}`}>{lastSaved}</div>
+          </div>
+
+          {/* Today (pink) */}
+          <div className="rounded-2xl p-4 flex flex-col justify-between relative overflow-hidden"
+               style={{
+                 background: dark
+                   ? 'linear-gradient(135deg, rgba(236,72,153,0.15) 0%, rgba(219,39,119,0.08) 100%)'
+                   : 'linear-gradient(135deg, rgba(236,72,153,0.10) 0%, rgba(219,39,119,0.04) 100%)',
+                 backdropFilter: 'blur(20px)',
+                 WebkitBackdropFilter: 'blur(20px)',
+                 border: dark ? '0.5px solid rgba(236,72,153,0.25)' : '0.5px solid rgba(236,72,153,0.20)',
+                 boxShadow: dark
+                   ? '0 12px 40px -12px rgba(236,72,153,0.30), inset 0 1px 0 rgba(255,255,255,0.06)'
+                   : '0 12px 40px -12px rgba(236,72,153,0.25), inset 0 1px 0 rgba(255,255,255,0.6)',
+               }}>
+            <div aria-hidden style={{
+              position: 'absolute', top: -30, right: -30, width: 120, height: 120,
+              background: 'radial-gradient(circle, rgba(236,72,153,0.30) 0%, transparent 70%)',
+              filter: 'blur(20px)', pointerEvents: 'none',
+            }} />
+            <div className="flex items-center justify-between relative">
+              <div className={`text-[10px] tracking-[0.12em] uppercase font-medium
+                              ${dark ? 'text-pink-300' : 'text-pink-700'}`}>Today</div>
+              <div className="w-6 h-6 rounded-md flex items-center justify-center"
+                   style={{ background: 'linear-gradient(135deg, #ec4899, #db2777)' }}>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round">
+                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                  <line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+                </svg>
+              </div>
+            </div>
+            <div className={`text-sm font-medium relative ${dark ? 'text-pink-50' : 'text-neutral-900'}`}>
+              {new Date().toLocaleDateString(undefined, { weekday:'short', month:'short', day:'numeric' })}
+            </div>
+          </div>
         </div>
 
         {/* Recent */}
@@ -3691,10 +4345,37 @@ function Dashboard({ folderHandle, pendingFolderHandle, onChooseFolder, onReconn
           )}
         </div>
 
-        {/* Cases label */}
+        {/* Cases label + view toggle */}
         <div className="flex items-center justify-between mt-5 mb-4">
-          <div className={`text-[10px] tracking-[0.15em] uppercase font-medium ${dark ? 'text-neutral-500' : 'text-neutral-400'}`}>All cases</div>
-          <div className={`text-[11px] font-mono ${dark ? 'text-neutral-600' : 'text-neutral-400'}`}>{filtered.length} {filtered.length === 1 ? 'case' : 'cases'}</div>
+          <div className="flex items-center gap-3">
+            <div className={`text-[10px] tracking-[0.15em] uppercase font-medium ${dark ? 'text-neutral-400' : 'text-neutral-500'}`}>All cases</div>
+            <div className={`text-[11px] font-mono ${dark ? 'text-neutral-500' : 'text-neutral-400'}`}>{filtered.length} {filtered.length === 1 ? 'case' : 'cases'}</div>
+          </div>
+          {/* View toggle */}
+          <div className="flex items-center rounded-lg p-0.5"
+               style={{
+                 background: dark ? 'rgba(255,255,255,0.05)' : 'rgba(255,255,255,0.6)',
+                 backdropFilter: 'blur(20px)',
+                 WebkitBackdropFilter: 'blur(20px)',
+                 border: dark ? '0.5px solid rgba(255,255,255,0.08)' : '0.5px solid rgba(0,0,0,0.06)',
+               }}>
+            <button onClick={() => setViewMode('grid')} title="Grid view"
+              className={`px-2.5 py-1.5 rounded-md transition-all flex items-center gap-1.5 text-[11px] font-medium ${viewMode === 'grid' ? (dark ? 'bg-white/10 text-white' : 'bg-white text-neutral-900 shadow-sm') : (dark ? 'text-neutral-400 hover:text-neutral-200' : 'text-neutral-500 hover:text-neutral-700')}`}>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/>
+                <rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
+              </svg>
+              Grid
+            </button>
+            <button onClick={() => setViewMode('list')} title="List view"
+              className={`px-2.5 py-1.5 rounded-md transition-all flex items-center gap-1.5 text-[11px] font-medium ${viewMode === 'list' ? (dark ? 'bg-white/10 text-white' : 'bg-white text-neutral-900 shadow-sm') : (dark ? 'text-neutral-400 hover:text-neutral-200' : 'text-neutral-500 hover:text-neutral-700')}`}>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                <line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/>
+                <line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/>
+              </svg>
+              List
+            </button>
+          </div>
         </div>
 
         {/* Grid */}
@@ -3710,7 +4391,7 @@ function Dashboard({ folderHandle, pendingFolderHandle, onChooseFolder, onReconn
             <div className="text-sm font-medium mb-1">No cases yet</div>
             <div className="text-xs">Click "New case" to get started, or drop a file above.</div>
           </div>
-        ) : (
+        ) : viewMode === 'grid' ? (
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
             {filtered.map(c => (
               <CaseFolder key={c.id} caseItem={c} dark={dark}
@@ -3720,15 +4401,80 @@ function Dashboard({ folderHandle, pendingFolderHandle, onChooseFolder, onReconn
             ))}
             <button onClick={onNewCase}
               className={`rounded-xl border-2 border-dashed flex flex-col items-center justify-center min-h-[200px] transition-colors
-                         ${dark ? 'border-neutral-800 hover:border-neutral-700' : 'border-neutral-200 hover:border-neutral-300'}`}>
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center mb-2 ${dark ? 'bg-neutral-800' : 'bg-neutral-100'}`}>
+                         ${dark ? 'border-neutral-700/50 hover:border-neutral-500' : 'border-neutral-300/50 hover:border-neutral-400'}`}>
+              <div className={`w-8 h-8 rounded-full flex items-center justify-center mb-2 ${dark ? 'bg-white/5' : 'bg-white/60'}`}>
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
               </div>
-              <span className={`text-xs ${dark ? 'text-neutral-600' : 'text-neutral-400'}`}>New case</span>
+              <span className={`text-xs ${dark ? 'text-neutral-400' : 'text-neutral-500'}`}>New case</span>
             </button>
           </div>
+        ) : (
+          <CaseList cases={filtered} dark={dark}
+            onOpen={openCase}
+            onDelete={handleDelete}
+            fmtDate={fmtDate} />
         )}
       </div>
+    </div>
+  );
+}
+
+// ============================================================
+// CASE LIST — Linear-style table view
+// ============================================================
+function CaseList({ cases, dark, onOpen, onDelete, fmtDate }) {
+  const dotColors = ['#fbbf24', '#10b981', '#6366f1', '#ec4899', '#06b6d4', '#f97316'];
+  return (
+    <div className="rounded-xl overflow-hidden"
+         style={{
+           background: dark ? 'rgba(255,255,255,0.03)' : 'rgba(255,255,255,0.6)',
+           backdropFilter: 'blur(20px)',
+           WebkitBackdropFilter: 'blur(20px)',
+           border: dark ? '0.5px solid rgba(255,255,255,0.08)' : '0.5px solid rgba(0,0,0,0.06)',
+         }}>
+      {/* Header row */}
+      <div className={`grid items-center gap-3 px-4 py-2.5 text-[10px] font-mono tracking-wider uppercase
+                      ${dark ? 'text-neutral-500 border-b border-white/5' : 'text-neutral-400 border-b border-black/5'}`}
+           style={{ gridTemplateColumns: '20px 1fr 120px 80px 80px 32px' }}>
+        <div></div>
+        <div>Name</div>
+        <div>Saved</div>
+        <div>Photos</div>
+        <div>Size</div>
+        <div></div>
+      </div>
+      {/* Rows */}
+      {cases.map((c, i) => {
+        const photoCount = (c.peekPhotos?.length || 0) + (c.totalPhotos || 0);
+        const sizeKb = c.size ? Math.round(c.size / 1024) : null;
+        return (
+          <div key={c.id}
+               onClick={() => onOpen(c)}
+               className={`grid items-center gap-3 px-4 py-3 cursor-pointer transition-colors group
+                          ${dark ? 'hover:bg-white/5 border-b border-white/5' : 'hover:bg-black/[0.02] border-b border-black/5'}
+                          ${i === cases.length - 1 ? 'border-b-0' : ''}`}
+               style={{ gridTemplateColumns: '20px 1fr 120px 80px 80px 32px' }}>
+            <div style={{
+              width: 7, height: 7, borderRadius: '50%',
+              background: dotColors[i % dotColors.length],
+              boxShadow: `0 0 8px ${dotColors[i % dotColors.length]}80`,
+            }}></div>
+            <div className={`text-sm font-medium truncate ${dark ? 'text-neutral-100' : 'text-neutral-900'}`}>{c.name}</div>
+            <div className={`text-xs font-mono ${dark ? 'text-neutral-400' : 'text-neutral-500'}`}>{fmtDate(c.savedAt)}</div>
+            <div className={`text-xs font-mono ${dark ? 'text-neutral-400' : 'text-neutral-500'}`}>{photoCount || '—'}</div>
+            <div className={`text-xs font-mono ${dark ? 'text-neutral-400' : 'text-neutral-500'}`}>{sizeKb ? `${sizeKb} KB` : '—'}</div>
+            <button onClick={(e) => { e.stopPropagation(); onDelete(c, e); }}
+                    className={`opacity-0 group-hover:opacity-100 transition-opacity p-1 rounded
+                              ${dark ? 'text-neutral-500 hover:text-red-400' : 'text-neutral-400 hover:text-red-500'}`}
+                    title="Delete">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                <polyline points="3 6 5 6 21 6"/><path d="M19 6l-2 14a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L5 6"/>
+                <path d="M10 11v6M14 11v6"/><path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
+              </svg>
+            </button>
+          </div>
+        );
+      })}
     </div>
   );
 }
@@ -3938,6 +4684,166 @@ function UnsavedModal({ caseName, onSave, onDiscard, onCancel }) {
             Cancel
           </button>
         </div>
+      </div>
+    </div>
+  );
+}
+
+// ============================================================
+// NAME CASE MODAL — shown when saving with default "New Case" name
+// ============================================================
+function NameCaseModal({ onConfirm, onCancel }) {
+  const { dark } = React.useContext(ThemeContext);
+  const [name, setName] = useState('');
+  const valid = name.trim().length > 0;
+  return (
+    <div className="fixed inset-0 z-[80] flex items-center justify-center bg-black/50 backdrop-blur-sm">
+      <div className={`w-full max-w-sm mx-4 rounded-2xl shadow-2xl p-6
+                      ${dark ? 'bg-neutral-900 border border-neutral-800' : 'bg-white border border-neutral-200'}`}>
+        <div className="flex items-start gap-3 mb-5">
+          <div className={`w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0
+                          ${dark ? 'bg-amber-500/10' : 'bg-amber-50'}`}>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#EF9F27" strokeWidth="2" strokeLinecap="round">
+              <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+              <polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/>
+            </svg>
+          </div>
+          <div>
+            <h2 className={`text-base font-semibold ${dark ? 'text-neutral-50' : 'text-neutral-900'}`}>Name this case</h2>
+            <p className={`text-xs mt-0.5 ${dark ? 'text-neutral-400' : 'text-neutral-500'}`}>
+              Give this case a name before saving.
+            </p>
+          </div>
+        </div>
+        <input
+          autoFocus
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          onKeyDown={(e) => { if (e.key === 'Enter' && valid) onConfirm(name.trim()); if (e.key === 'Escape') onCancel(); }}
+          placeholder="e.g. John Smith"
+          className={`w-full px-3 py-2.5 rounded-lg border text-sm outline-none mb-4
+                     ${dark ? 'bg-neutral-800 border-neutral-700 text-neutral-100 focus:border-amber-500'
+                            : 'bg-white border-neutral-300 text-neutral-900 focus:border-amber-500'}`}
+          style={{ WebkitUserSelect: 'text', userSelect: 'text' }}
+        />
+        <div className="flex gap-2">
+          <button onClick={onCancel}
+            className={`flex-1 py-2.5 rounded-xl text-sm font-medium border transition-colors
+                       ${dark ? 'border-neutral-700 text-neutral-300 hover:bg-neutral-800' : 'border-neutral-200 text-neutral-700 hover:bg-neutral-50'}`}>
+            Cancel
+          </button>
+          <button onClick={() => valid && onConfirm(name.trim())} disabled={!valid}
+            className={`flex-1 py-2.5 rounded-xl text-sm font-medium transition-colors disabled:opacity-40
+                       ${dark ? 'bg-neutral-100 text-neutral-900 hover:bg-white' : 'bg-neutral-900 text-white hover:bg-neutral-800'}`}>
+            Save
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ============================================================
+// DUPLICATE NAME MODAL
+// ============================================================
+function DuplicateModal({ currentName, onReplace, onRename, onCancel }) {
+  const { dark } = React.useContext(ThemeContext);
+  const [mode, setMode] = useState('choice'); // 'choice' | 'rename'
+  const [newName, setNewName] = useState(currentName + ' (2)');
+
+  return (
+    <div className="fixed inset-0 z-[80] flex items-center justify-center bg-black/50 backdrop-blur-sm">
+      <div className={`w-full max-w-sm mx-4 rounded-2xl shadow-2xl p-6
+                      ${dark ? 'bg-neutral-900 border border-neutral-800' : 'bg-white border border-neutral-200'}`}>
+        <div className="flex items-start gap-3 mb-4">
+          <div className={`w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0
+                          ${dark ? 'bg-amber-500/10' : 'bg-amber-50'}`}>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#EF9F27" strokeWidth="2" strokeLinecap="round">
+              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+              <line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+            </svg>
+          </div>
+          <div>
+            <h2 className={`text-base font-semibold ${dark ? 'text-neutral-50' : 'text-neutral-900'}`}>
+              Name already exists
+            </h2>
+            <p className={`text-xs mt-0.5 ${dark ? 'text-neutral-400' : 'text-neutral-500'}`}>
+              A case named <span className={`font-medium ${dark ? 'text-neutral-200' : 'text-neutral-700'}`}>"{currentName}"</span> already exists.
+            </p>
+          </div>
+        </div>
+
+        {mode === 'choice' ? (
+          <div className="space-y-2">
+            <button onClick={onReplace}
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl border text-left transition-colors
+                         ${dark ? 'border-neutral-700 hover:bg-neutral-800' : 'border-neutral-200 hover:bg-neutral-50'}`}>
+              <div className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0
+                              ${dark ? 'bg-neutral-800' : 'bg-neutral-100'}`}>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                  <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                  <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+                </svg>
+              </div>
+              <div>
+                <div className={`text-sm font-medium ${dark ? 'text-neutral-100' : 'text-neutral-900'}`}>Replace</div>
+                <div className={`text-xs ${dark ? 'text-neutral-500' : 'text-neutral-400'}`}>Overwrite the existing file</div>
+              </div>
+            </button>
+
+            <button onClick={() => setMode('rename')}
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl border text-left transition-colors
+                         ${dark ? 'border-neutral-700 hover:bg-neutral-800' : 'border-neutral-200 hover:bg-neutral-50'}`}>
+              <div className={`w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0
+                              ${dark ? 'bg-neutral-800' : 'bg-neutral-100'}`}>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                  <path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+                </svg>
+              </div>
+              <div>
+                <div className={`text-sm font-medium ${dark ? 'text-neutral-100' : 'text-neutral-900'}`}>Save with a new name</div>
+                <div className={`text-xs ${dark ? 'text-neutral-500' : 'text-neutral-400'}`}>Keep both cases</div>
+              </div>
+            </button>
+
+            <button onClick={onCancel}
+              className={`w-full py-2 text-xs font-medium transition-colors mt-1
+                         ${dark ? 'text-neutral-500 hover:text-neutral-300' : 'text-neutral-400 hover:text-neutral-700'}`}>
+              Cancel
+            </button>
+          </div>
+        ) : (
+          <div>
+            <label className={`text-xs font-medium block mb-1.5 ${dark ? 'text-neutral-400' : 'text-neutral-500'}`}>
+              New case name
+            </label>
+            <input
+              autoFocus
+              value={newName}
+              onChange={(e) => setNewName(e.target.value)}
+              onKeyDown={(e) => { if (e.key === 'Enter' && newName.trim()) onRename(newName.trim()); if (e.key === 'Escape') setMode('choice'); }}
+              className={`w-full px-3 py-2.5 rounded-lg border text-sm outline-none mb-3
+                         ${dark ? 'bg-neutral-800 border-neutral-700 text-neutral-100 focus:border-amber-500'
+                                : 'bg-white border-neutral-300 text-neutral-900 focus:border-amber-500'}`}
+              style={{ WebkitUserSelect: 'text', userSelect: 'text' }}
+            />
+            <div className="flex gap-2">
+              <button onClick={() => setMode('choice')}
+                className={`flex-1 py-2.5 rounded-lg text-sm font-medium border transition-colors
+                           ${dark ? 'border-neutral-700 text-neutral-400 hover:bg-neutral-800'
+                                  : 'border-neutral-200 text-neutral-500 hover:bg-neutral-50'}`}>
+                Back
+              </button>
+              <button onClick={() => newName.trim() && onRename(newName.trim())}
+                disabled={!newName.trim()}
+                className={`flex-1 py-2.5 rounded-lg text-sm font-medium transition-colors disabled:opacity-40
+                           ${dark ? 'bg-neutral-100 text-neutral-900 hover:bg-white'
+                                  : 'bg-neutral-900 text-white hover:bg-neutral-800'}`}>
+                Save
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
