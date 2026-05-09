@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
 <title>Orthoboard — Treatment Planning</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
@@ -17,7 +17,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  html, body, #root { height: 100%; margin: 0; padding: 0; overflow: hidden; touch-action: none; }
+  html, body, #root { height: 100dvh; margin: 0; padding: 0; overflow: hidden; }
   body {
     font-family: 'Geist', system-ui, -apple-system, sans-serif;
     background: #fafaf9;
@@ -56,51 +56,6 @@
   }
   .light input[type=range]::-webkit-slider-thumb { background: #18181b; }
   .dark  input[type=range]::-webkit-slider-thumb { background: #fafafa; }
-
-  /* ============================================================
-     TABLET OPTIMIZATIONS (touch devices, iPad/Android tablets)
-     ============================================================ */
-  @media (pointer: coarse) {
-    /* Larger hit-area sliders */
-    input[type=range]::-webkit-slider-runnable-track { height: 6px; border-radius: 3px; }
-    input[type=range]::-webkit-slider-thumb {
-      width: 24px; height: 24px; margin-top: -9px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.18);
-    }
-    input[type=range] { height: 32px; }
-
-    /* Minimum 44px touch targets */
-    button, [role="button"], a {
-      min-height: 36px;
-      touch-action: manipulation;
-    }
-
-    /* Bigger scrollbar in scrollable panels */
-    *::-webkit-scrollbar { width: 10px; height: 10px; }
-    *::-webkit-scrollbar-thumb {
-      background: rgba(120,120,120,0.35);
-      border-radius: 8px;
-    }
-
-    /* Avoid iOS zoom-on-focus for inputs (font ≥ 16px) */
-    input, textarea, select { font-size: 16px; }
-  }
-
-  /* iPad / tablet breakpoint — refine layout density */
-  @media (min-width: 768px) and (max-width: 1366px) and (pointer: coarse) {
-    body { font-size: 15px; }
-  }
-
-  /* Safe-area padding for notched tablets in landscape */
-  @supports (padding: env(safe-area-inset-left)) {
-    #root {
-      padding-left: env(safe-area-inset-left);
-      padding-right: env(safe-area-inset-right);
-    }
-  }
-
-  /* Prevent overscroll bounce on iPadOS Safari */
-  html, body { overscroll-behavior: none; }
 </style>
 </head>
 <body class="light">
@@ -2141,6 +2096,13 @@ function DiagnosticItem({ item, photo, editable, onUpdate, onCommit, onDelete })
   const stroke = item.color || '#dc2626';
   const sw = item.strokeWidth || 2;
   const handleR = Math.max(2, Math.min(W, H) * 0.008); // smaller handles
+  const isTouch = typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches;
+  const touchHitR = isTouch ? Math.max(handleR * 3, 14) : handleR; // invisible larger hit area on touch
+  // Invisible circle that enlarges the touch target without changing visuals
+  const TouchHit = ({ cx, cy, onPointerDown, cursor = 'move' }) => (
+    <circle cx={cx} cy={cy} r={touchHitR} fill="transparent"
+            style={{ cursor }} onPointerDown={onPointerDown} />
+  );
 
   if (item.type === 'vline') {
     const x = px(item.x);
@@ -2153,12 +2115,10 @@ function DiagnosticItem({ item, photo, editable, onUpdate, onCommit, onDelete })
               style={{ cursor: editable ? 'ew-resize' : 'default' }}
               onPointerDown={(e) => editable && onPtDown(e, 'line')} />
         {editable && <>
-          <circle cx={x} cy={py(item.y1)} r={handleR} fill={stroke}
-                  style={{ cursor: 'ns-resize' }}
-                  onPointerDown={(e) => onPtDown(e, 'top')} />
-          <circle cx={x} cy={py(item.y2)} r={handleR} fill={stroke}
-                  style={{ cursor: 'ns-resize' }}
-                  onPointerDown={(e) => onPtDown(e, 'bot')} />
+          <TouchHit cx={x} cy={py(item.y1)} cursor="ns-resize" onPointerDown={(e) => onPtDown(e, 'top')} />
+          <TouchHit cx={x} cy={py(item.y2)} cursor="ns-resize" onPointerDown={(e) => onPtDown(e, 'bot')} />
+          <circle cx={x} cy={py(item.y1)} r={handleR} fill={stroke} style={{ pointerEvents: 'none' }} />
+          <circle cx={x} cy={py(item.y2)} r={handleR} fill={stroke} style={{ pointerEvents: 'none' }} />
           <DeleteHandle x={x + 14} y={py(item.y1) - 14} onDelete={onDelete} r={handleR} />
         </>}
       </g>
@@ -2176,12 +2136,10 @@ function DiagnosticItem({ item, photo, editable, onUpdate, onCommit, onDelete })
               style={{ cursor: editable ? 'ns-resize' : 'default' }}
               onPointerDown={(e) => editable && onPtDown(e, 'line')} />
         {editable && <>
-          <circle cx={px(item.x1)} cy={y} r={handleR} fill={stroke}
-                  style={{ cursor: 'ew-resize' }}
-                  onPointerDown={(e) => onPtDown(e, 'left')} />
-          <circle cx={px(item.x2)} cy={y} r={handleR} fill={stroke}
-                  style={{ cursor: 'ew-resize' }}
-                  onPointerDown={(e) => onPtDown(e, 'right')} />
+          <TouchHit cx={px(item.x1)} cy={y} cursor="ew-resize" onPointerDown={(e) => onPtDown(e, 'left')} />
+          <TouchHit cx={px(item.x2)} cy={y} cursor="ew-resize" onPointerDown={(e) => onPtDown(e, 'right')} />
+          <circle cx={px(item.x1)} cy={y} r={handleR} fill={stroke} style={{ pointerEvents: 'none' }} />
+          <circle cx={px(item.x2)} cy={y} r={handleR} fill={stroke} style={{ pointerEvents: 'none' }} />
           <DeleteHandle x={px(item.x2) + 14} y={y - 14} onDelete={onDelete} r={handleR} />
         </>}
       </g>
@@ -2199,10 +2157,12 @@ function DiagnosticItem({ item, photo, editable, onUpdate, onCommit, onDelete })
               style={{ cursor: editable ? 'move' : 'default' }}
               onPointerDown={(e) => editable && onPtDown(e, 'all')} />
         {editable && points.map((pt, i) => (
-          <circle key={i} cx={pt.x} cy={pt.y} r={handleR}
-                  fill="white" stroke={lineColor} strokeWidth={1.5}
-                  style={{ cursor: 'move' }}
-                  onPointerDown={(e) => onPtDown(e, 'pt', i)} />
+          <g key={i}>
+            <TouchHit cx={pt.x} cy={pt.y} onPointerDown={(e) => onPtDown(e, 'pt', i)} />
+            <circle cx={pt.x} cy={pt.y} r={handleR}
+                    fill="white" stroke={lineColor} strokeWidth={1.5}
+                    style={{ pointerEvents: 'none' }} />
+          </g>
         ))}
         {editable && <DeleteHandle x={points[points.length-1].x + 14} y={points[points.length-1].y - 14}
                                    onDelete={onDelete} r={handleR} />}
@@ -2394,9 +2354,12 @@ function DiagnosticItem({ item, photo, editable, onUpdate, onCommit, onDelete })
           {deg.toFixed(1)}°
         </text>
         {editable && <>
-          <circle cx={ax}  cy={ay}  r={handleR} fill={stroke}   style={{ cursor: 'move' }} onPointerDown={(e) => onPtDown(e, 'apex')} />
-          <circle cx={p1x} cy={p1y} r={handleR} fill="white" stroke={stroke} strokeWidth={1.5} style={{ cursor: 'move' }} onPointerDown={(e) => onPtDown(e, 'p1')} />
-          <circle cx={p2x} cy={p2y} r={handleR} fill="white" stroke={stroke} strokeWidth={1.5} style={{ cursor: 'move' }} onPointerDown={(e) => onPtDown(e, 'p2')} />
+          <TouchHit cx={ax}  cy={ay}  onPointerDown={(e) => onPtDown(e, 'apex')} />
+          <TouchHit cx={p1x} cy={p1y} onPointerDown={(e) => onPtDown(e, 'p1')} />
+          <TouchHit cx={p2x} cy={p2y} onPointerDown={(e) => onPtDown(e, 'p2')} />
+          <circle cx={ax}  cy={ay}  r={handleR} fill={stroke}   style={{ cursor: 'move', pointerEvents: 'none' }} />
+          <circle cx={p1x} cy={p1y} r={handleR} fill="white" stroke={stroke} strokeWidth={1.5} style={{ cursor: 'move', pointerEvents: 'none' }} />
+          <circle cx={p2x} cy={p2y} r={handleR} fill="white" stroke={stroke} strokeWidth={1.5} style={{ cursor: 'move', pointerEvents: 'none' }} />
           <DeleteHandle x={ax + 14} y={ay - 14} onDelete={onDelete} r={handleR} />
         </>}
       </g>
@@ -3182,7 +3145,7 @@ function Toolbar({ tool, setTool, strokeWidth, setStrokeWidth, onDiagnosticClick
   return (
     <div className={`absolute left-3 sm:left-4 z-30 flex flex-col gap-1.5 rounded-xl p-1.5 shadow-md overflow-y-auto
                     ${dark ? 'bg-neutral-900 border border-neutral-800' : 'bg-white border border-neutral-200'}`}
-         style={{ top: 72, bottom: 80, maxHeight: 'calc(100vh - 152px)', scrollbarWidth: 'none' }}>
+         style={{ top: 72, bottom: 80, maxHeight: 'calc(100dvh - 152px)', scrollbarWidth: 'none' }}>
 
       {TOOLS.map(t => (
         <div key={t.id} className="flex-shrink-0">
@@ -3348,18 +3311,18 @@ function Sidebar({ open, setOpen, photos, onUploadClick, caseName, setCaseName,
           </div>
 
           <button onClick={onUploadClick}
-            className={`group relative w-full py-4 px-5 rounded-xl transition-colors
-                       flex flex-col items-center justify-center gap-1 font-medium text-sm
+            className={`group relative w-full py-3.5 px-5 rounded-xl transition-colors
+                       flex items-center justify-center gap-3 font-medium text-sm
                        ${dark ? 'bg-neutral-100 text-neutral-900 hover:bg-white'
                               : 'bg-neutral-900 text-white hover:bg-neutral-800'}`}>
-            <div className="flex items-center gap-2.5">
-              <IconUpload size={16} />
+            <IconUpload size={18} />
+            <div className="flex flex-col items-start leading-tight">
               <span>Upload File</span>
+              <span className={`text-[10px] font-normal tracking-wide
+                               ${dark ? 'text-neutral-500' : 'text-white/55'}`}>
+                JPG · PNG · WEBP · HEIC · STL
+              </span>
             </div>
-            <span className={`text-[10px] font-normal tracking-wide
-                             ${dark ? 'text-neutral-500' : 'text-white/50'}`}>
-              JPG · PNG · WEBP · HEIC · STL
-            </span>
           </button>
 
           <div className="grid grid-cols-2 gap-2 mt-2">
