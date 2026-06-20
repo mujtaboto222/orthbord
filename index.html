@@ -5,13 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
 <title>Orthoboard — Treatment Planning</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230a0a0a'/%3E%3Ctext x='32' y='44' text-anchor='middle' font-family='Geist,system-ui,sans-serif' font-weight='600' font-size='36' fill='%23fafafa'%3EO%3C/text%3E%3C/svg%3E" />
-<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.tailwindcss.com/3.4.16"></script>
 <script>
   tailwind.config = { darkMode: 'class' };
 </script>
-<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-<script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<script crossorigin src="https://unpkg.com/react@18.3.1/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7.23.10/babel.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -218,7 +218,8 @@ const DIAG_TOOLS = [
   { id: 'hline',     Icon: IconHorz,     label: 'Horizontal Line',   desc: 'Perpendicular to true vertical' },
   { id: 'curve',     Icon: IconCurve,    label: 'Lip Line',          desc: 'Match lip line to upper lip' },
   { id: 'smileline', Icon: IconSmileLine,label: 'Smile Arc',         desc: 'Match smile arc to lower lip' },
-  { id: 'teeth',     Icon: IconTeeth,    label: 'Tooth Proportions', desc: 'Smile design grid (golden ratio)' },
+  { id: 'teeth',     Icon: IconTeeth,    label: 'Golden Proportion', desc: 'Smile design grid (golden ratio)' },
+  { id: 'redteeth',  Icon: IconTeeth,    label: 'RED Proportions',   desc: 'Recurring esthetic dental (70%)' },
   { id: 'fifths',    Icon: IconFifths,   label: 'Rule of Fifths',    desc: 'Resize box — 5 equal vertical fifths' },
   { id: 'thirds',    Icon: IconThirds,   label: 'Rule of Thirds',    desc: 'Resize box — 3 equal horizontal thirds' },
   { id: 'angle',     Icon: IconAngle,    label: 'Angle Tool',        desc: 'Measure angle between two lines' },
@@ -1084,8 +1085,21 @@ function App() {
         { x: 0.8, y: 0.55 },
       ] }),
       ...(toolDef.id === 'teeth'  && {
-        x: 0.1, y: 0.25, w: 0.8, h: 0.5,
+        x: 0.1, y: 0.25, w: 0.8, h: 0.375,
         ratios: [0.382, 0.618, 1.0, 1.0, 0.618, 0.382],
+        showTeeth: true,
+        showBox: true,
+        // vertical offsets (normalized): 6 in-box teeth + 2 premolars [L, R]
+        toothOffsets: [0, 0, 0, 0, 0, 0],
+        pmOffsets: [0, 0],
+      }),
+      ...(toolDef.id === 'redteeth' && {
+        x: 0.1, y: 0.25, w: 0.8, h: 0.365,
+        ratios: [0.49, 0.7, 1.0, 1.0, 0.7, 0.49],
+        showTeeth: true,
+        showBox: true,
+        toothOffsets: [0, 0, 0, 0, 0, 0],
+        pmOffsets: [0, 0],
       }),
       ...(toolDef.id === 'fifths' && {
         // Simple box that contains 5 equal vertical divisions
@@ -2058,7 +2072,7 @@ function DiagnosticItem({ item, photo, editable, onUpdate, onCommit, onDelete })
           onUpdate({ points: newPts });
         }
       }
-      if (item.type === 'teeth') {
+      if (item.type === 'teeth' || item.type === 'redteeth') {
         if (drag.type === 'corner') {
           const corner = drag.idx;
           let nc = { x: item.x, y: item.y, w: item.w, h: item.h };
@@ -2080,6 +2094,14 @@ function DiagnosticItem({ item, photo, editable, onUpdate, onCommit, onDelete })
             x: Math.max(0, Math.min(1 - drag.startItem.w, drag.startItem.x + dx)),
             y: Math.max(0, Math.min(1 - drag.startItem.h, drag.startItem.y + dy)),
           });
+        } else if (drag.type === 'tooth') {
+          const base = (drag.startItem.toothOffsets || [0,0,0,0,0,0]).slice();
+          base[drag.idx] = (base[drag.idx] || 0) + dy;
+          onUpdate({ toothOffsets: base });
+        } else if (drag.type === 'pm') {
+          const base = (drag.startItem.pmOffsets || [0,0]).slice();
+          base[drag.idx] = (base[drag.idx] || 0) + dy;
+          onUpdate({ pmOffsets: base });
         }
       }
       if (item.type === 'angle') {
@@ -2200,7 +2222,7 @@ function DiagnosticItem({ item, photo, editable, onUpdate, onCommit, onDelete })
     );
   }
 
-  if (item.type === 'teeth') {
+  if (item.type === 'teeth' || item.type === 'redteeth') {
     const totalRatio = item.ratios.reduce((a, b) => a + b, 0);
     const boxW = px(item.w), boxH = py(item.h);
     const boxX = px(item.x), boxY = py(item.y);
@@ -2214,17 +2236,66 @@ function DiagnosticItem({ item, photo, editable, onUpdate, onCommit, onDelete })
     });
     const fs = Math.max(7, Math.min(W, H) * 0.022);
     const LABELS = ['Canine', 'Lateral', 'Central', 'Central', 'Lateral', 'Canine'];
+    const tOff = item.toothOffsets || [0,0,0,0,0,0];
+    const pOff = item.pmOffsets || [0,0];
+    const showBox = item.showBox !== false;
     return (
       <g>
-        <rect x={boxX} y={boxY} width={boxW} height={boxH}
-              fill="rgba(220,38,38,0.05)" stroke={stroke} strokeWidth={sw}
-              style={{ cursor: editable ? 'move' : 'default' }}
-              onPointerDown={(e) => editable && onPtDown(e, 'body')} />
-        {segments.slice(1).map((seg, i) => (
+        {showBox && (
+          <rect x={boxX} y={boxY} width={boxW} height={boxH}
+                fill="rgba(220,38,38,0.05)" stroke={stroke} strokeWidth={sw}
+                style={{ cursor: editable ? 'move' : 'default' }}
+                onPointerDown={(e) => editable && onPtDown(e, 'body')} />
+        )}
+        {showBox && segments.slice(1).map((seg, i) => (
           <line key={i} x1={boxX + seg.x} y1={boxY} x2={boxX + seg.x} y2={boxY + boxH}
                 stroke={stroke} strokeWidth={sw * 0.7} strokeDasharray="3 2" />
         ))}
-        {segments.map((seg, i) => {
+        {item.showTeeth && (() => {
+          const KEYS = ['canineL','lateralL','centralL','centralR','lateralR','canineR'];
+          const pad = 0.05;
+          const out = [];
+          // 6 teeth inside the box — each warps to fill its segment, movable vertically
+          segments.forEach((seg, i) => {
+            const padX = seg.w * pad, padY = boxH * pad;
+            const oy = boxY + padY + py(tOff[i] || 0);
+            const tx = boxX + seg.x + padX, tw = seg.w - padX * 2, th = boxH - padY * 2;
+            const d = toothOutlinePath(TOOTH_TEMPLATES[KEYS[i]], tx, oy, tw, th);
+            out.push(<path key={'t'+i} d={d} fill="rgba(220,38,38,0.07)"
+                           stroke="white" strokeWidth={sw * 0.5} strokeLinejoin="round"
+                           style={{ pointerEvents: 'none' }} />);
+            if (editable) out.push(<rect key={'th'+i} x={tx} y={oy} width={tw} height={th}
+                           fill="transparent" style={{ cursor: 'ns-resize' }}
+                           onPointerDown={(e) => onPtDown(e, 'tooth', i)} />);
+          });
+          // 2 premolars outside the box — width follows the recurring proportion
+          // (recurring ratio = lateral/central from this tool's own ratios: golden 0.618, RED 0.70)
+          const recur = item.ratios[2] > 0 ? item.ratios[1] / item.ratios[2] : 0.618;
+          const canineW = segments[0].w;
+          const pmW = canineW * recur;
+          const padX = pmW * pad, padY = boxH * pad;
+          const pmTh = boxH - padY * 2;
+          const lY = boxY + padY + py(pOff[0] || 0), rY = boxY + padY + py(pOff[1] || 0);
+          const lX = boxX - pmW + padX, rX = boxX + boxW + padX, pmTw = pmW - padX * 2;
+          out.push(<path key="pml"
+            d={toothOutlinePath(TOOTH_TEMPLATES.premolarL, lX, lY, pmTw, pmTh)}
+            fill="rgba(220,38,38,0.07)" stroke="white" strokeWidth={sw * 0.5}
+            strokeLinejoin="round" style={{ pointerEvents: 'none' }} />);
+          out.push(<path key="pmr"
+            d={toothOutlinePath(TOOTH_TEMPLATES.premolarR, rX, rY, pmTw, pmTh)}
+            fill="rgba(220,38,38,0.07)" stroke="white" strokeWidth={sw * 0.5}
+            strokeLinejoin="round" style={{ pointerEvents: 'none' }} />);
+          if (editable) {
+            out.push(<rect key="pmlh" x={lX} y={lY} width={pmTw} height={pmTh}
+                     fill="transparent" style={{ cursor: 'ns-resize' }}
+                     onPointerDown={(e) => onPtDown(e, 'pm', 0)} />);
+            out.push(<rect key="pmrh" x={rX} y={rY} width={pmTw} height={pmTh}
+                     fill="transparent" style={{ cursor: 'ns-resize' }}
+                     onPointerDown={(e) => onPtDown(e, 'pm', 1)} />);
+          }
+          return <g>{out}</g>;
+        })()}
+        {showBox && segments.map((seg, i) => {
           // W:H ratio for this tooth (width as % of height)
           const wh = boxH > 0 ? Math.round((seg.w / boxH) * 100) : 0;
           // Proportion relative to central (central = 100%)
@@ -2267,6 +2338,35 @@ function DiagnosticItem({ item, photo, editable, onUpdate, onCommit, onDelete })
                   onPointerDown={(e) => onPtDown(e, 'corner', c)} />
           );
         })}
+        {editable && (() => {
+          const bw2 = Math.max(fs * 4.5, 54);
+          const bh2 = fs * 1.6;
+          const gap = 6;
+          const totalW = bw2 * 2 + gap;
+          const startX = boxX + boxW / 2 - totalW / 2;
+          const by2 = boxY - bh2 - 10;
+          const Pill = ({ x, on, label, onTap }) => (
+            <g style={{ cursor: 'pointer' }}
+               onPointerDown={(e) => { e.stopPropagation(); onTap(); onCommit && onCommit(); }}>
+              <rect x={x} y={by2} width={bw2} height={bh2} rx={bh2 / 2}
+                    fill={on ? stroke : 'white'} stroke={stroke} strokeWidth={2} />
+              <text x={x + bw2 / 2} y={by2 + bh2 / 2 + fs * 0.32} textAnchor="middle"
+                    fontSize={fs * 0.72} fontWeight="700"
+                    fill={on ? 'white' : stroke}
+                    style={{ pointerEvents: 'none' }} fontFamily="Geist, system-ui, sans-serif">
+                {label}
+              </text>
+            </g>
+          );
+          return (
+            <g>
+              <Pill x={startX} on={item.showTeeth} label={item.showTeeth ? 'Teeth on' : 'Teeth off'}
+                    onTap={() => onUpdate({ showTeeth: !item.showTeeth })} />
+              <Pill x={startX + bw2 + gap} on={showBox} label={showBox ? 'Box on' : 'Box off'}
+                    onTap={() => onUpdate({ showBox: !showBox })} />
+            </g>
+          );
+        })()}
         {editable && <DeleteHandle x={boxX + boxW + 8} y={boxY - 14} onDelete={onDelete} r={handleR} />}
       </g>
     );
@@ -2408,6 +2508,24 @@ function DeleteHandle({ x, y, onDelete, r = 4 }) {
       <line x1={x + R*0.4} y1={y - R*0.4} x2={x - R*0.4} y2={y + R*0.4} stroke="#dc2626" strokeWidth={1.5} />
     </g>
   );
+}
+
+// Tooth outline templates (normalized 0..1 per tooth box). Used by Tooth Proportions overlay.
+const TOOTH_TEMPLATES = {"premolarL":[[-0.167,0.4],[-0.148,0.588],[0.005,0.75],[0.717,0.954],[1.164,0.74],[1.031,0.458],[0.577,0.268],[0.545,0.09],[0.298,0.072]],"canineL":[[0.145,0.028],[-0.037,0.165],[-0.085,0.394],[0.021,0.78],[0.434,1.008],[0.679,1.03],[0.796,0.879],[0.951,0.753],[0.976,0.674],[1.041,0.562],[0.964,0.357],[0.512,0.192],[0.304,-0.016]],"lateralL":[[0.286,0.032],[0.102,0.094],[-0.08,0.383],[0.005,0.855],[1.009,0.855],[0.95,0.271],[0.549,0.048]],"centralL":[[0.059,0.085],[-0.034,0.282],[-0.034,0.798],[0.184,1.006],[0.97,0.99],[1.04,0.623],[0.992,0.357],[0.775,0.085],[0.337,-0.035]],"centralR":[[0.663,-0.035],[0.225,0.085],[0.008,0.357],[-0.04,0.623],[0.03,0.99],[0.816,1.006],[1.034,0.798],[1.034,0.282],[0.941,0.085]],"lateralR":[[0.451,0.048],[0.05,0.271],[-0.009,0.855],[0.995,0.855],[1.08,0.383],[0.898,0.094],[0.714,0.032]],"canineR":[[0.696,-0.016],[0.488,0.192],[0.036,0.357],[-0.041,0.562],[0.024,0.674],[0.049,0.753],[0.204,0.879],[0.321,1.03],[0.566,1.008],[0.979,0.78],[1.085,0.394],[1.037,0.165],[0.855,0.028]],"premolarR":[[0.702,0.072],[0.455,0.09],[0.423,0.268],[-0.031,0.458],[-0.164,0.74],[0.283,0.954],[0.995,0.75],[1.148,0.588],[1.167,0.4]]};
+
+// Closed smooth path from normalized [[x,y],...] pts mapped into a box (ox,oy,w,h).
+function toothOutlinePath(pts, ox, oy, w, h) {
+  if (!pts || pts.length < 2) return '';
+  const P = pts.map(([nx, ny]) => ({ x: ox + nx * w, y: oy + ny * h }));
+  const n = P.length;
+  let d = `M ${P[0].x} ${P[0].y}`;
+  for (let i = 0; i < n; i++) {
+    const p0 = P[(i - 1 + n) % n], p1 = P[i], p2 = P[(i + 1) % n], p3 = P[(i + 2) % n];
+    const cp1x = p1.x + (p2.x - p0.x) / 6, cp1y = p1.y + (p2.y - p0.y) / 6;
+    const cp2x = p2.x - (p3.x - p1.x) / 6, cp2y = p2.y - (p3.y - p1.y) / 6;
+    d += ` C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${p2.x} ${p2.y}`;
+  }
+  return d + ' Z';
 }
 
 function catmullRomPath(pts) {
