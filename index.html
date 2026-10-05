@@ -14,6 +14,7 @@
 <script src="https://unpkg.com/@babel/standalone@7.23.10/babel.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="ai-preview.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -1506,6 +1507,31 @@ function App() {
                 a.download = `${safe}_${photo.category}_${photo.id.slice(0,4)}.${ext}`;
                 a.click();
                 setContextMenu(null);
+              }}
+              onAIPreview={() => {
+                setContextMenu(null);
+                window.OrthoAI.open({
+                  src: photo.src,
+                  // Saved result goes next to the original photo
+                  onSave: (src, meta) => {
+                    const img = new Image();
+                    img.onload = () => {
+                      const ratio = img.width / img.height;
+                      setPhotos(prev => [...prev, {
+                        id: crypto.randomUUID(),
+                        src, ratio,
+                        category: photo.category,
+                        isLateralCeph: false, cephResults: null,
+                        rotation: photo.rotation || 0, flipH: photo.flipH, flipV: photo.flipV,
+                        diagnostics: [],
+                        x: photo.x + photo.w + 40, y: photo.y,
+                        w: photo.w, h: photo.w / ratio,
+                        aiSimulation: meta, // consent time + generation time saved with the case
+                      }]);
+                    };
+                    img.src = src;
+                  },
+                });
               }}
             />
           );
@@ -3137,7 +3163,7 @@ function DarkRect({ imgBox, x, y, w, h }) {
 // ============================================================
 // PHOTO CONTEXT MENU
 // ============================================================
-function PhotoContextMenu({ photo, x, y, onClose, onToggleCeph, onAnalyzeCeph, onDelete, onSavePhoto }) {
+function PhotoContextMenu({ photo, x, y, onClose, onToggleCeph, onAnalyzeCeph, onDelete, onSavePhoto, onAIPreview }) {
   const { dark } = React.useContext(ThemeContext);
   const ref = useRef(null);
 
@@ -3154,7 +3180,7 @@ function PhotoContextMenu({ photo, x, y, onClose, onToggleCeph, onAnalyzeCeph, o
 
   // Keep menu inside viewport
   const menuW = 220;
-  const menuH = 200;
+  const menuH = 240;
   const left = Math.min(x, window.innerWidth - menuW - 10);
   const top  = Math.min(y, window.innerHeight - menuH - 10);
 
@@ -3188,6 +3214,16 @@ function PhotoContextMenu({ photo, x, y, onClose, onToggleCeph, onAnalyzeCeph, o
       </button>
 
       <div className={`h-px mx-2 my-1 ${dark ? 'bg-neutral-800' : 'bg-neutral-200'}`} />
+
+      {/* AI Treatment Preview — smile / intra-oral photos only */}
+      {photo.category !== 'xray' && (
+        <button onClick={onAIPreview}
+          className={`w-full flex items-center gap-3 px-3 py-2 text-sm transition-colors text-left
+                     ${dark ? 'hover:bg-neutral-800 text-sky-400' : 'hover:bg-sky-50 text-sky-700'}`}>
+          <IconTeeth size={14} />
+          <span>AI Treatment Preview</span>
+        </button>
+      )}
 
       <button onClick={onSavePhoto}
         className={`w-full flex items-center gap-3 px-3 py-2 text-sm transition-colors text-left
